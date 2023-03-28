@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const Register = () => {
   return (
     <div className="grid grid-rows-3 grid-cols-6 w-screen h-screen border-8 border-white lg:overflow-hidden">
-      <div className="mx-[10%] my-[2vh] row-span-1 col-span-6 lg:row-span-3 lg:col-span-2  lg:mx-0 ">
+      <div className="mx-[10%] my-[2vh] row-span-1 col-span-6 lg:row-span-3 lg:col-span-3 lg:ml-[2vh] ">
         <img className="h-full w-full" src={registerLogo} alt="" />{" "}
       </div>
-      <div className="mx-[10%] row-span-2 col-span-6 lg:row-span-3 lg:col-span-4 flex flex-col lg:ml-[20%] lg:mt-[10%] lg:w-full lg:h-full">
+      <div className="mx-[10%] row-span-2 col-span-6 lg:row-span-3 lg:col-span-3 flex flex-col lg:mx-[20%] lg:mt-[10%] lg:w-full lg:h-full">
         <h2 className="font-medium text-2xl">Wellcome to PreCup,</h2>
         <h2 className="font-medium text-2xl">Please register to continue.</h2>
         <p className="font-lgiht mt-2">

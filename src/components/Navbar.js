@@ -53,7 +53,7 @@ function Navbar() {
         </Link>
       </nav>
       <nav
-        className={`sticky z-[2] relative backdrop-blur-sm md:hidden  ${
+        className={`sticky z-[2]  backdrop-blur-sm md:hidden  ${
           visible ? "top-0" : "0"
         } flex align-center w-[100%] p-4 pt-8 px-8  justify-between `}
       >
@@ -110,7 +110,7 @@ function Navbar() {
                       leaveFrom="opacity-100"
                       leaveTo="opacity-0"
                     >
-                      <div className="absolute left-0 top-0  -ml-8 flex pr-2 pt-4 ml-6 sm:pr-4">
+                      <div className="absolute left-0 top-0  flex pr-2 pt-4 ml-6 sm:pr-4">
                         <button
                           type="button"
                           className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"

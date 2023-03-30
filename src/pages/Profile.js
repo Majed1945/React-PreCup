@@ -1,100 +1,173 @@
-import { Link } from "react-router-dom";
-const Profile = () => {
+import Navbar from "../components/Navbar";
+import { IoPersonOutline } from "react-icons/io5";
+const Profile1 = () => {
   return (
-    <div className="flex flex-col m-[5%]">
-      <h1 className=" mb-[2%] font-medium text-xl">Account Settings</h1>
-      <div className="border-2 rounded">
-        <h2 className="font-medium text-lg border-b p-[2%]">
-          Personal Information
-        </h2>
+    <div>
+      <Navbar />
+      <form className="flex flex-col mx-[20%] my-[5%]">
+        <div className="space-y-12">
+          <div className="">
+            <h2 className="text-md font-bold sm:text-xl leading-7 text-gray-900 mb-6 flex items-center gap-1">
+              <IoPersonOutline className="inline" /> Update Your Information
+            </h2>
+            <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="sm:col-span-3 ">
+                <label
+                  htmlFor="first-name"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  First name
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    autoComplete="given-name"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
 
-        <form className="p-[2%]">
-          <div class="mb-3 ">
-            <label
-              for="fName"
-              class="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              First Name
-            </label>
-            <input
-              type="text"
-              id="fName"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="Mohammad"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label
-              for="fName"
-              class="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              Second Name
-            </label>
-            <input
-              type="text"
-              id="sName"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="Mosallam"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label
-              for="email"
-              class="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              Phone Number
-            </label>
-            <input
-              type="phone"
-              id="phone"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="0538894521"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label
-              for="email"
-              class="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="name@flowbite.com"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label
-              for="password"
-              class="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="***************"
-              required
-            />
-          </div>
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="last-name"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Last name
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="last-name"
+                    id="last-name"
+                    autoComplete="family-name"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
 
-          <button
-            type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Phone Number
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label
+                  htmlFor="street-address"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Street address
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="street-address"
+                    id="street-address"
+                    autoComplete="street-address"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2 sm:col-start-1">
+                <label
+                  htmlFor="city"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  City
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    autoComplete="address-level2"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="region"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  State / Province
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="region"
+                    id="region"
+                    autoComplete="address-level1"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="postal-code"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  ZIP / Postal code
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="postal-code"
+                    id="postal-code"
+                    autoComplete="postal-code"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-6">
+                <button
+                  type="submit"
+                  className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm w-full"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default Profile;
+export default Profile1;

@@ -3,7 +3,7 @@ import { IoCartOutline, IoClose, IoMenuOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-
+import logo from "../Assets/logo.png";
 function Navbar() {
   //   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -97,11 +97,12 @@ function Navbar() {
         } flex items-center w-[100%] p-4 pt-8 px-16  justify-between `}
       >
         <div>
-          <Link to="/" className=" text-xl font-bold">
+          <Link to="/" className="flex items-center text-xl font-bold">
+            <img src={logo} className=" w-12 h-12" />
             PreCup
           </Link>
         </div>
-        <ul className="flex font-extralight gap-8">
+        <ul className="flex  gap-8">
           <li>
             <Link to="/">Home </Link>
           </li>
@@ -124,22 +125,25 @@ function Navbar() {
       <nav
         className={`sticky z-[2]  backdrop-blur-sm md:hidden  ${
           visible ? "top-0" : "0"
-        } flex align-center w-[100%] p-4 pt-8 px-8  justify-between `}
+        } flex items-center w-[100%] p-4 pt-8 px-8  justify-between `}
       >
         <div>
-          <Link className=" font-bold">PreCup</Link>
+          <Link className=" text-xl flex items-center font-bold">
+            <img src={logo} className=" w-12 h-12" />
+            PreCup
+          </Link>
         </div>
 
-        <div className="flex gap-8">
-          <Link className="pt-1">
-            <IoCartOutline className=" text-center  block m-auto" />
+        <div className="flex items-center gap-8">
+          <Link>
+            <IoCartOutline className="w-6 h-6 text-center  block m-auto" />
           </Link>
           <button
             onClick={() => {
               setOpen(!open);
             }}
           >
-            <IoMenuOutline />
+            <IoMenuOutline className="w-6 h-6" />
           </button>
         </div>
       </nav>

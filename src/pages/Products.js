@@ -9,6 +9,24 @@ import ProductCups from "../components/ProductCups";
 import Navbar from "../components/Navbar";
 
 export default function Products() {
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.6,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+  const item = {
+    hidden: { x: -100, opacity: 0 },
+    visible: {
+      x: 1,
+      opacity: 1,
+    },
+  };
   return (
     <>
       <Navbar />
@@ -31,18 +49,25 @@ export default function Products() {
                   Products
                 </h2>
 
-                <div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
+                <motion.div
+                  variants={container}
+                  initial="hidden"
+                  animate="visible"
+                  className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
+                >
                   {PAPER_CUPS_PRODUCTS.map((e) => {
                     return (
-                      <ProductCups
-                        img={e.img}
-                        name={e.name}
-                        price={e.price}
-                        size={e.size}
-                      />
+                      <motion.div variants={item}>
+                        <ProductCups
+                          img={e.img}
+                          name={e.name}
+                          price={e.price}
+                          size={e.size}
+                        />
+                      </motion.div>
                     );
                   })}
-                </div>
+                </motion.div>
               </section>
             </div>
 
@@ -58,18 +83,25 @@ export default function Products() {
                 aria-labelledby="products-heading"
                 className="pb-24 pt-6"
               >
-                <div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
+                <motion.div
+                  variants={container}
+                  initial="hidden"
+                  animate="visible"
+                  className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
+                >
                   {PLASTIC_CUPS_PRODUCTS.map((e) => {
                     return (
-                      <ProductCups
-                        img={e.img}
-                        name={e.name}
-                        price={e.price}
-                        size={e.size}
-                      />
+                      <motion.div variants={item}>
+                        <ProductCups
+                          img={e.img}
+                          name={e.name}
+                          price={e.price}
+                          size={e.size}
+                        />
+                      </motion.div>
                     );
                   })}
-                </div>
+                </motion.div>
               </section>
             </div>
             <div>

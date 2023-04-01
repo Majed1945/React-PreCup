@@ -128,6 +128,7 @@ function Navbar() {
             <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
           </Link>
           <Link
+            to="/login"
             className={
               "bg-black text-white rounded-lg p-1  flex items-center gap-2"
             }
@@ -236,6 +237,7 @@ function Navbar() {
                           AI
                         </Link>
                         <Link
+                          to="/login"
                           className={
                             "bg-black text-white text-xl rounded-lg p-1  flex items-center gap-2"
                           }

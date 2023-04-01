@@ -15,6 +15,12 @@ const Register = () => {
         <div className=" my-4  mt-8 text-6xl font-serif">
           <h1>Register</h1>
         </div>
+        <p className="font-extralight tracking-widest ">
+          Already an account?{" "}
+          <Link to="/login" className="underline">
+            Login
+          </Link>
+        </p>
         <div>
           <p className="font-extralight tracking-widest ">
             Find your perfect papercup today - Register now!

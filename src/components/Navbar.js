@@ -127,7 +127,7 @@ function Navbar() {
           <Link to="/cart">
             <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
           </Link>
-          <Link
+          <Link to="/login"
             className={
               "bg-black text-white rounded-lg p-1  flex items-center gap-2"
             }

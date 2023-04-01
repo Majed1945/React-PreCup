@@ -5,7 +5,10 @@ import { IoArrowForwardOutline, IoLogoGoogle } from "react-icons/io5";
 const Register = () => {
   return (
     <div className="flex flex-col relative md:flex-row ">
-      <img className=" absolute top-0 right-0 w-16  h-16" src={logo} />
+      <Link to="/">
+        <img className=" absolute top-0 right-0 w-16  h-16" src={logo} />
+      </Link>
+
       <div className="w-full  md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
         <div>
           <img src={noonCup} className="md:scale-150 z-[-999]  " />
@@ -18,6 +21,12 @@ const Register = () => {
         <div>
           <p className="font-extralight tracking-widest ">
             Find your perfect papercup today - Register now!
+          </p>
+          <p className="font-extralight tracking-widest ">
+            Already an account?{" "}
+            <Link to="/login" className="underline">
+              Login
+            </Link>
           </p>
         </div>
         <div className="flex flex-col gap-4 mt-10">

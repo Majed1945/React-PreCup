@@ -237,6 +237,7 @@ function Navbar() {
                           AI
                         </Link>
                         <Link
+                          to="/login"
                           className={
                             "bg-black text-white text-xl rounded-lg p-1  flex items-center gap-2"
                           }

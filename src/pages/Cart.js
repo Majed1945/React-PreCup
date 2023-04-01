@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import cupImage from "../Assets/KPG-cup.png";
-import { BsTrash } from "react-icons/bs";
+import { IoAddOutline, IoRemoveOutline, IoTrashOutline } from "react-icons/io5";
 const Cart = () => {
   const item = {
     id: 1,
@@ -132,9 +132,7 @@ const Cart = () => {
               <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5 ">
                 Price
               </h3>
-              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5 ">
-                Total
-              </h3>
+              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5 "></h3>
             </div>
             {items.map((item) => {
               return (
@@ -150,50 +148,51 @@ const Cart = () => {
                         alt=""
                       />
                     </div>
-                    <div className="flex flex-col justify-between ml-4 flex-grow">
+                    <div className="flex flex-col  my-auto ml-4 flex-grow">
                       <span className="font-bold text-sm">{item.name}</span>
                       <span className="text-gray-400 text-xs">
                         {item.description}
                       </span>
-                      <a
-                        href="#"
-                        className="font-bold hover:text-red-500 text-gray-500 text-xs"
-                        onClick={() => removeItem(item.id)}
-                      >
-                        Remove
-                      </a>
                     </div>
                   </div>
                   <div className="flex justify-center w-1/5 ">
-                    <button onClick={() => reduceQuantity(item.id)}>
-                      <svg
-                        className="fill-current text-gray-600 w-3"
-                        viewBox="0 0 448 512"
-                      >
-                        <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                      </svg>
-                    </button>
-
-                    <input
-                      className="mx-2 px-2 border text-center w-8"
-                      type="text"
-                      value={item.quantity}
-                    />
-
-                    <button onClick={() => increaseQuantity(item.id)}>
-                      <svg
-                        className="fill-current text-gray-600 w-3"
-                        viewBox="0 0 448 512"
-                      >
-                        <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                      </svg>
-                    </button>
+                    <div className="flex justify-end rounded-xl px-[3px] border-[1px] border-black items-center">
+                      <div>
+                        <button
+                          className="  border-black rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
+                          onClick={() => {
+                            increaseQuantity(item.id);
+                          }}
+                        >
+                          <IoAddOutline className="w-full h-full" />
+                        </button>
+                      </div>
+                      <div>
+                        <input
+                          className=" text-center p-0 border-0 w-5"
+                          type="text"
+                          value={item.quantity}
+                        />
+                      </div>
+                      <div>
+                        <button
+                          className="  bg-black text-white rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
+                          onClick={() => {
+                            reduceQuantity(item.id);
+                          }}
+                        >
+                          <IoRemoveOutline className="w-full h-full" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <span className="text-center w-1/5 font-bold text-sm">
-                    ${item.price}
+                    ${item.price * item.quantity}
                   </span>
                   <span className="text-center w-1/5 font-bold text-sm">
-                    ${item.price * item.quantity}
+                    <div className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg ">
+                      <IoTrashOutline className="w-5 h-5" />
+                    </div>
                   </span>
                 </div>
               );

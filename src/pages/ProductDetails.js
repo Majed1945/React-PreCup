@@ -88,13 +88,19 @@ function ProductDetails() {
           </div>
           <div className="flex gap-4 justify-between items-center ">
             <div className="rounded-full  md:text-2xl w-full px-[3px] border-[1px] border-black">
-              <Link className="flex m-0 p-2 items-center justify-between">
+              <Link
+                to="/checkOut"
+                className="flex m-0 p-2 items-center justify-between"
+              >
                 <h1>Check Out</h1>
                 <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
               </Link>
             </div>
             <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
-              <Link className="flex m-0 p-2 items-center justify-between">
+              <Link
+                to="/cart"
+                className="flex m-0 p-2 items-center justify-between"
+              >
                 <h1>Add to Cart</h1>
                 <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
               </Link>

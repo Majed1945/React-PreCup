@@ -108,7 +108,7 @@ const Confirmation = () => {
               <h1 className="font-base  text-md text-black">Confirmation</h1>
             </div>
 
-            <div className="flex flex-col border-2 my-[5%] mx-[20%] rounded-md ">
+            <div className="flex flex-col border-2 my-[5%] lg:mx-[20%] rounded-md ">
               <div className="flex flex-col items-center text-center text mx-auto gap-3 p-4">
                 <IoCheckmarkCircleOutline className=" block w-16 h-16" />
                 <h1 className="font-bold text-2xl block">

@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import { IoPersonOutline } from "react-icons/io5";
-const Profile1 = () => {
+const Profile = () => {
   return (
     <div>
       <Navbar />
@@ -157,7 +157,7 @@ const Profile1 = () => {
               <div className="sm:col-span-6">
                 <button
                   type="submit"
-                  className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm w-full"
+                  className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm  w-full transition hover:bg-gray-900 hover:-translate-y-1 ease-in-out"
                 >
                   Save
                 </button>
@@ -170,4 +170,4 @@ const Profile1 = () => {
   );
 };
 
-export default Profile1;
+export default Profile;

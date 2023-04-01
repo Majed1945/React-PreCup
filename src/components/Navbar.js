@@ -1,5 +1,10 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { IoCartOutline, IoClose, IoMenuOutline } from "react-icons/io5";
+import {
+  IoCartOutline,
+  IoClose,
+  IoLogOutOutline,
+  IoMenuOutline,
+} from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
@@ -118,10 +123,21 @@ function Navbar() {
             </Link>
           </li>
         </ul>
-        <Link to="/cart" className="pt-1">
-          <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/cart">
+            <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
+          </Link>
+          <Link
+            className={
+              "bg-black text-white rounded-lg p-1  flex items-center gap-2"
+            }
+          >
+            <IoLogOutOutline className=" w-6 h-6 text-center  block m-auto" />
+          </Link>
+        </div>
       </nav>
+
+      {/* For mobile version */}
       <nav
         className={`sticky z-[2]  backdrop-blur-sm md:hidden  ${
           visible ? "top-0" : "0"
@@ -218,6 +234,13 @@ function Navbar() {
                           className=" hover:scale-110  ease-in-out duration-300"
                         >
                           AI
+                        </Link>
+                        <Link
+                          className={
+                            "bg-black text-white text-xl rounded-lg p-1  flex items-center gap-2"
+                          }
+                        >
+                          <IoLogOutOutline className=" w-10 h-10 text-center m-auto  block" />
                         </Link>
                       </div>
                     </div>

@@ -5,10 +5,12 @@ import {
   IoArrowForwardOutline,
   IoRemoveOutline,
 } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import kpjCup from "../Assets/KPG-cup.png";
 
 function ProductDetails() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col md:flex-row ">
       <div className="w-full md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
@@ -17,7 +19,12 @@ function ProductDetails() {
         </div>
       </div>
       <div className=" w-full md:w-[50%] z-[2] p-6 md:p-16 my-auto">
-        <Link to="/products" className="flex items-center gap-2">
+        <Link
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="flex items-center gap-2"
+        >
           <div className=" border-[1px] rounded-[50%] border-black p-2">
             <IoArrowBackOutline />
           </div>

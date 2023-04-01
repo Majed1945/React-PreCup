@@ -39,7 +39,7 @@ export default function Products() {
                 initial={{ y: 0, opacity: 0 }}
                 animate={{ y: -50, opacity: 1 }}
                 transition={{ duration: 0.9 }}
-                className="sticky top-0  z-[1] backdrop-blur-md md:bg-white items-baseline justify-between border-b border-gray-200 pb-6 pt-24"
+                className="sticky top-0  z-[1] backdrop-blur-md md:bg-white items-baseline justify-between border-b border-gray-200 pb-6 pt-36"
               >
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">
                   Paper Cups

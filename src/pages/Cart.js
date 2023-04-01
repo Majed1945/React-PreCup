@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import cupImage from "../Assets/KPG-cup.png";
-import { BsTrash } from "react-icons/bs";
+
 const Cart = () => {
   const item = {
     id: 1,

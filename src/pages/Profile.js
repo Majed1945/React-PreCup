@@ -4,7 +4,7 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      <form className="flex flex-col mx-[20%] my-[5%]">
+      <form className="flex flex-col mx-[10%] lg:mx-[20%] my-[5%]">
         <div className="space-y-12">
           <div className="">
             <h2 className="text-md font-bold sm:text-xl leading-7 text-gray-900 mb-6 flex items-center gap-1">

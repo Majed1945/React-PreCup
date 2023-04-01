@@ -21,6 +21,12 @@ const Login = () => {
           <p className="font-extralight tracking-widest ">
             Find your perfect papercup today - log in now!
           </p>
+          <p className="font-extralight tracking-widest ">
+            Don"t have an account?{" "}
+            <Link to="/register" className="underline">
+              Register
+            </Link>
+          </p>
         </div>
         <div className="flex flex-col gap-4 mt-10">
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">

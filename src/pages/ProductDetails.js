@@ -3,7 +3,6 @@ import {
   IoAddOutline,
   IoArrowBackOutline,
   IoArrowForwardOutline,
-  IoCartOutline,
   IoRemoveOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -26,7 +25,7 @@ function ProductDetails() {
         </Link>
         <div className=" my-4 mt-8 text-5xl font-serif">
           <h1>
-            Fancy <span className=" font-sans font-extralight">Pineapple</span>
+            Fancy <span className=" font-metal ">Pineapple</span>
           </h1>
         </div>
         <div>

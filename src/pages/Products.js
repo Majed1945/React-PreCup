@@ -16,14 +16,15 @@ export default function Products() {
       scale: 1,
       transition: {
         delayChildren: 0.6,
-        staggerChildren: 0.2,
+        staggerChildren: 0.5,
+        duration: 0.9,
       },
     },
   };
   const item = {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { y: -100, opacity: 0 },
     visible: {
-      x: 1,
+      y: 1,
       opacity: 1,
     },
   };
@@ -34,12 +35,17 @@ export default function Products() {
         <div>
           <main className="mx-auto max-w-7xl px-8 md:px-16  ">
             <div>
-              <div className="sticky top-0  z-[1] backdrop-blur-md md:bg-white items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+              <motion.div
+                initial={{ y: 0, opacity: 0 }}
+                animate={{ y: -50, opacity: 1 }}
+                transition={{ duration: 0.9 }}
+                className="sticky top-0  z-[1] backdrop-blur-md md:bg-white items-baseline justify-between border-b border-gray-200 pb-6 pt-24"
+              >
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">
                   Paper Cups
                 </h1>
                 <div>{/* <IoCashOutline className={" w-6 h-6 "} /> */}</div>
-              </div>
+              </motion.div>
 
               <section
                 aria-labelledby="products-heading"
@@ -57,7 +63,11 @@ export default function Products() {
                 >
                   {PAPER_CUPS_PRODUCTS.map((e) => {
                     return (
-                      <motion.div variants={item}>
+                      <motion.div
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.95 }}
+                        variants={item}
+                      >
                         <ProductCups
                           img={e.img}
                           name={e.name}

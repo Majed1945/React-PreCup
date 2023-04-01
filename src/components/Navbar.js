@@ -128,14 +128,14 @@ function Navbar() {
         } flex items-center w-[100%] p-4 pt-8 px-8  justify-between `}
       >
         <div>
-          <Link className=" text-xl flex items-center font-bold">
+          <Link to="/" className=" text-xl flex items-center font-bold">
             <img src={logo} className=" w-12 h-12" />
             PreCup
           </Link>
         </div>
 
         <div className="flex items-center gap-8">
-          <Link>
+          <Link to="/cart">
             <IoCartOutline className="w-6 h-6 text-center  block m-auto" />
           </Link>
           <button
@@ -195,17 +195,29 @@ function Navbar() {
                     </Transition.Child>
                     <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                       <div className="relative flex text-[5rem]  flex-col mt-6 flex-1 px-4 sm:px-6">
-                        <Link className=" hover:scale-110  ease-in-out duration-300">
+                        <Link
+                          to="/"
+                          className=" hover:scale-110  ease-in-out duration-300"
+                        >
                           Home
                         </Link>
-                        <Link className=" hover:scale-110  ease-in-out duration-300">
+                        <Link
+                          to="/products"
+                          className=" hover:scale-110  ease-in-out duration-300"
+                        >
                           Products
                         </Link>
-                        <Link className=" hover:scale-110  ease-in-out duration-300">
-                          Services
+                        <Link
+                          to="/profile"
+                          className=" hover:scale-110  ease-in-out duration-300"
+                        >
+                          Profile
                         </Link>
-                        <Link className=" hover:scale-110  ease-in-out duration-300">
-                          About us
+                        <Link
+                          to="/ai"
+                          className=" hover:scale-110  ease-in-out duration-300"
+                        >
+                          AI
                         </Link>
                       </div>
                     </div>

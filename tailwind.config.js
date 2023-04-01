@@ -10,6 +10,9 @@ module.exports = {
         bgColor:
           "linear-gradient(-65deg, var(--background) 50%, var(--background-light) 50%)",
       },
+      fontFamily: {
+        metal: ["Metal", "cursive"],
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

@@ -21,6 +21,12 @@ const Register = () => {
           <p className="font-extralight tracking-widest ">
             Find your perfect papercup today - Register now!
           </p>
+          <p className="font-extralight tracking-widest ">
+            Already an account?{" "}
+            <Link to="/login" className="underline">
+              Login
+            </Link>
+          </p>
         </div>
         <div className="flex flex-col gap-4 mt-10">
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">

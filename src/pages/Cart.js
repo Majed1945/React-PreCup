@@ -2,8 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { BsCart4 } from "react-icons/bs";
 import cupImage from "../Assets/KPG-cup.png";
-import { IoAddOutline, IoRemoveOutline, IoTrashOutline } from "react-icons/io5";
+import logo from "../Assets/logo.png";
+import { motion } from "framer-motion";
+import {
+  IoAddOutline,
+  IoCashOutline,
+  IoRemoveOutline,
+  IoTrashOutline,
+} from "react-icons/io5";
 const Cart = () => {
   const item = {
     id: 1,
@@ -115,7 +123,11 @@ const Cart = () => {
               <h1 className="font-base  text-md text-gray-400">Confirmation</h1>
             </div>
             <div className="flex justify-between border-b py-8">
-              <h1 className="font-bold text-2xl">Shopping Cart</h1>
+              <div className="flex items-center gap-2">
+                <BsCart4 className="w-8 h-8" />
+
+                <h1 className="font-bold text-2xl">Shopping Cart</h1>
+              </div>
               {items.length === 1 ? (
                 <h2 className="font-bold text-2xl"> 1 Item </h2>
               ) : (
@@ -123,41 +135,56 @@ const Cart = () => {
               )}
             </div>
             <div className="flex mt-10 mb-5">
-              <h3 className="font-bold text-gray-600 text-xs uppercase w-2/5">
-                Product Details
+              <h3 className="font-bold text-gray-600 text-xs uppercase w-2/4">
+                Product
               </h3>
-              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5">
+              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/4">
                 Quantity
               </h3>
-              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5 ">
+              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/4 ">
                 Price
               </h3>
-              <h3 className="font-bold text-center text-gray-600 text-xs uppercase w-1/5 "></h3>
             </div>
             {items.map((item) => {
               return (
                 <div
                   key={item.id}
-                  className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
+                  className="flex items-center  hover:bg-gray-100 rounded-lg -mx-8 px-6 py-5"
                 >
-                  <div className="flex w-2/5">
-                    <div className="w-20">
-                      <img
-                        className="h-24 object-cover"
-                        src={cupImage}
-                        alt=""
-                      />
+                  <div className="flex w-2/4">
+                    <div className=" w-20">
+                      <div className="flex flex-row-reverse">
+                        <img
+                          className="h-24 object-cover"
+                          src={cupImage}
+                          alt=""
+                        />
+                        <span className="text-center md:hidden font-bold text-sm">
+                          <div
+                            onClick={() => {
+                              removeItem(item.id);
+                            }}
+                            className="m-auto md:w-fit h-full flex  items-center cursor-pointer bg-red-500 p-[0.1rem]  rounded-tl-lg rounded-bl-lg text-white md:rounded-lg "
+                          >
+                            <IoTrashOutline className="md:w-5 md:h-5" />
+                          </div>
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex flex-col  my-auto ml-4 flex-grow">
+                    <div className="flex flex-col  my-auto md:ml-4 flex-grow">
                       <span className="font-bold text-sm">{item.name}</span>
                       <span className="text-gray-400 text-xs">
                         {item.description}
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-center w-1/5 ">
+
+                  <div className="flex  justify-center w-1/4 ">
                     <div className="flex justify-end rounded-xl px-[3px] border-[1px] border-black items-center">
-                      <div>
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
                         <button
                           className="  border-black rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
                           onClick={() => {
@@ -166,15 +193,18 @@ const Cart = () => {
                         >
                           <IoAddOutline className="w-full h-full" />
                         </button>
-                      </div>
+                      </motion.div>
                       <div>
                         <input
-                          className=" text-center p-0 border-0 w-5"
+                          className=" text-center bg-transparent p-0 border-0 w-5"
                           type="text"
                           value={item.quantity}
                         />
                       </div>
-                      <div>
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
                         <button
                           className="  bg-black text-white rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
                           onClick={() => {
@@ -183,23 +213,40 @@ const Cart = () => {
                         >
                           <IoRemoveOutline className="w-full h-full" />
                         </button>
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
-                  <span className="text-center w-1/5 font-bold text-sm">
+                  <span className="text-center w-1/4 font-bold text-sm">
                     ${item.price * item.quantity}
                   </span>
-                  <span className="text-center w-1/5 font-bold text-sm">
-                    <div className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg ">
+                  <span className="text-center hidden  md:block font-bold text-sm">
+                    <motion.div
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => {
+                        removeItem(item.id);
+                      }}
+                      className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg "
+                    >
                       <IoTrashOutline className="w-5 h-5" />
-                    </div>
+                    </motion.div>
                   </span>
                 </div>
               );
             })}
           </div>
-          <div id="summary" className="w-full lg:w-1/4 px-8 py-10 lg:mt-[40px]">
-            <h1 className="font-bold text-2xl border-b pb-8">Price</h1>
+          <div
+            id="summary"
+            className="w-full relative overflow-hidden z-[3] bg-gray-50 rounded-2xl lg:w-1/4 px-8 py-10 lg:mt-[40px]"
+          >
+            <img
+              src={logo}
+              className="absolute opacity-10 bottom-0  md:scale-150 z-[-99]  left-32"
+            />
+            <div className="flex items-center gap-2 border-b pb-8">
+              <IoCashOutline className="w-8 h-8" />
+              <h1 className="font-bold text-2xl ">Price</h1>
+            </div>
             <div className="flex flex-col ">
               <div className="flex flex-row justify-between items-center">
                 <span className="font-medium inline-block  text-sm uppercase">
@@ -215,7 +262,7 @@ const Cart = () => {
                 Shipping
               </label>
               <select
-                className="block p-2 text-gray-600 w-full text-sm"
+                className="block p-2 text-gray-600 rounded-lg w-full text-sm"
                 value={shippingOption}
                 onChange={updateShippingOption}
               >
@@ -229,7 +276,7 @@ const Cart = () => {
                 Address
               </label>
               <select
-                className="block p-2 text-gray-600 w-full text-sm"
+                className="block p-2 text-gray-600  rounded-lg w-full text-sm"
                 value={shippingAddress}
                 onChange={updateShippingAddress}
               >

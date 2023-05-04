@@ -5,7 +5,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import cupImage from "../Assets/KPG-cup.png";
 import logo from "../Assets/logo.png";
-import { motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import {
   IoAddOutline,
   IoCashOutline,
@@ -115,19 +115,58 @@ const Cart = () => {
           <div className="w-full lg:w-3/4 bg-white px-10 py-5">
             <div className="flex flex-row items-center ">
               <Link to="/cart">
-                <h1 className="font-base text-md text-black">Cart</h1>
+                <motion.h1
+                  layout
+                  initial={{ x: -80, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 1.3 }}
+                  className="font-base text-md text-black"
+                >
+                  Cart
+                </motion.h1>
               </Link>
-              <MdKeyboardArrowRight className="mx-1 text-gray-400" />
-              <h1 className="font-base text-md text-gray-400 ">Check Out</h1>
-              <MdKeyboardArrowRight className="mx-1 text-gray-400" />
-              <h1 className="font-base  text-md text-gray-400">Confirmation</h1>
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.4, delay: 0.2 }}
+              >
+                <MdKeyboardArrowRight className="mx-1 text-gray-400" />
+              </motion.div>
+              <motion.h1
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.6, delay: 0.3 }}
+                className="font-base text-md text-gray-400 "
+              >
+                Check Out
+              </motion.h1>
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.8, delay: 0.4 }}
+              >
+                <MdKeyboardArrowRight className="mx-1 text-gray-400" />
+              </motion.div>
+              <motion.h1
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.6 }}
+                className="font-base  text-md text-gray-400"
+              >
+                Confirmation
+              </motion.h1>
             </div>
             <div className="flex justify-between border-b py-8">
-              <div className="flex items-center gap-2">
+              <motion.div
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+                className="flex items-center gap-2"
+              >
                 <BsCart4 className="w-8 h-8" />
 
                 <h1 className="font-bold text-2xl">Shopping Cart</h1>
-              </div>
+              </motion.div>
               {items.length === 1 ? (
                 <h2 className="font-bold text-2xl"> 1 Item </h2>
               ) : (
@@ -145,95 +184,98 @@ const Cart = () => {
                 Price
               </h3>
             </div>
-            {items.map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  className="flex items-center  hover:bg-gray-100 rounded-lg -mx-8 px-6 py-5"
-                >
-                  <div className="flex w-2/4">
-                    <div className=" w-20">
-                      <div className="flex flex-row-reverse">
-                        <img
-                          className="h-24 object-cover"
-                          src={cupImage}
-                          alt=""
-                        />
-                        <span className="text-center md:hidden font-bold text-sm">
-                          <div
-                            onClick={() => {
-                              removeItem(item.id);
-                            }}
-                            className="m-auto md:w-fit h-full flex  items-center cursor-pointer bg-red-500 p-[0.1rem]  rounded-tl-lg rounded-bl-lg text-white md:rounded-lg "
-                          >
-                            <IoTrashOutline className="md:w-5 md:h-5" />
-                          </div>
+            <LayoutGroup>
+              {items.map((item) => {
+                return (
+                  <motion.div
+                    layout="position"
+                    key={item.id}
+                    className="flex items-center  hover:bg-gray-100 rounded-lg -mx-8 px-6 py-5"
+                  >
+                    <div className="flex w-2/4">
+                      <div className=" w-20">
+                        <div className="flex flex-row-reverse">
+                          <img
+                            className="h-24 object-cover"
+                            src={cupImage}
+                            alt=""
+                          />
+                          <span className="text-center md:hidden font-bold text-sm">
+                            <div
+                              onClick={() => {
+                                removeItem(item.id);
+                              }}
+                              className="m-auto md:w-fit h-full flex  items-center cursor-pointer bg-red-500 p-[0.1rem]  rounded-tl-lg rounded-bl-lg text-white md:rounded-lg "
+                            >
+                              <IoTrashOutline className="md:w-5 md:h-5" />
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col  my-auto md:ml-4 flex-grow">
+                        <span className="font-bold text-sm">{item.name}</span>
+                        <span className="text-gray-400 text-xs">
+                          {item.description}
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col  my-auto md:ml-4 flex-grow">
-                      <span className="font-bold text-sm">{item.name}</span>
-                      <span className="text-gray-400 text-xs">
-                        {item.description}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="flex  justify-center w-1/4 ">
-                    <div className="flex justify-end rounded-xl px-[3px] border-[1px] border-black items-center">
-                      <motion.div
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <button
-                          className="  border-black rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
-                          onClick={() => {
-                            increaseQuantity(item.id);
-                          }}
+                    <div className="flex  justify-center w-1/4 ">
+                      <div className="flex justify-end rounded-xl px-[3px] border-[1px] border-black items-center">
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
                         >
-                          <IoAddOutline className="w-full h-full" />
-                        </button>
-                      </motion.div>
-                      <div>
-                        <input
-                          className=" text-center bg-transparent p-0 border-0 w-5"
-                          type="text"
-                          value={item.quantity}
-                        />
+                          <button
+                            className="  border-black rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
+                            onClick={() => {
+                              increaseQuantity(item.id);
+                            }}
+                          >
+                            <IoAddOutline className="w-full h-full" />
+                          </button>
+                        </motion.div>
+                        <div>
+                          <input
+                            className=" text-center bg-transparent p-0 border-0 w-5"
+                            type="text"
+                            value={item.quantity}
+                          />
+                        </div>
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <button
+                            className="  bg-black text-white rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
+                            onClick={() => {
+                              reduceQuantity(item.id);
+                            }}
+                          >
+                            <IoRemoveOutline className="w-full h-full" />
+                          </button>
+                        </motion.div>
                       </div>
+                    </div>
+                    <span className="text-center w-1/4 font-bold text-sm">
+                      ${item.price * item.quantity}
+                    </span>
+                    <span className="text-center hidden  md:block font-bold text-sm">
                       <motion.div
                         whileHover={{ scale: 1.2 }}
                         whileTap={{ scale: 0.9 }}
+                        onClick={() => {
+                          removeItem(item.id);
+                        }}
+                        className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg "
                       >
-                        <button
-                          className="  bg-black text-white rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
-                          onClick={() => {
-                            reduceQuantity(item.id);
-                          }}
-                        >
-                          <IoRemoveOutline className="w-full h-full" />
-                        </button>
+                        <IoTrashOutline className="w-5 h-5" />
                       </motion.div>
-                    </div>
-                  </div>
-                  <span className="text-center w-1/4 font-bold text-sm">
-                    ${item.price * item.quantity}
-                  </span>
-                  <span className="text-center hidden  md:block font-bold text-sm">
-                    <motion.div
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => {
-                        removeItem(item.id);
-                      }}
-                      className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg "
-                    >
-                      <IoTrashOutline className="w-5 h-5" />
-                    </motion.div>
-                  </span>
-                </div>
-              );
-            })}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </LayoutGroup>
           </div>
           <div
             id="summary"
@@ -241,7 +283,7 @@ const Cart = () => {
           >
             <img
               src={logo}
-              className="absolute opacity-10 bottom-0  md:scale-150 z-[-99]  left-32"
+              className="absolute opacity-10 bottom-0   md:scale-150 z-[-99]  left-32"
             />
             <div className="flex items-center gap-2 border-b pb-8">
               <IoCashOutline className="w-8 h-8" />

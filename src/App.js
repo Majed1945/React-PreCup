@@ -9,21 +9,24 @@ import Confirmation from "./pages/Confirmation";
 import Products from "./pages/Products";
 import Ai from "./pages/Ai";
 import ProductDetails from "./pages/ProductDetails";
-
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
-    <Routes>
-      <Route exact path="/" element={<Home />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/register" element={<Register />} />
-      <Route exact path="/cart" element={<Cart />} />
-      <Route exact path="/profile" element={<Profile />} />
-      <Route exact path="/checkOut" element={<Payment />} />
-      <Route exact path="/confirmation" element={<Confirmation />} />
-      <Route exact path="/products" element={<Products />} />
-      <Route exact path="/productDetails" element={<ProductDetails />} />
-      <Route exact path="/ai" element={<Ai />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/register" element={<Register />} />
+        <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/checkOut" element={<Payment />} />
+        <Route exact path="/confirmation" element={<Confirmation />} />
+        <Route exact path="/products" element={<Products />} />
+        <Route exact path="/productDetails" element={<ProductDetails />} />
+        <Route exact path="/ai" element={<Ai />} />
+      </Routes>
+      <ToastContainer />
+    </>
   );
 }
 

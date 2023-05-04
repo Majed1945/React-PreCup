@@ -1,8 +1,64 @@
 import noonCup from "../Assets/noonCup.png";
 import logo from "../Assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { IoArrowForwardOutline, IoLogoGoogle } from "react-icons/io5";
+import { useState } from "react";
+import showToast from "../components/Toast";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebase-config";
+import { collection, setDoc, doc } from "firebase/firestore";
+
 const Register = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  async function createUserDocument(user, name) {}
+  const handleRegisterUser = async (e) => {
+    e.preventDefault();
+    if (email === "" || password === "" || name === "") {
+      showToast("Please fill all fields", "error");
+    } else {
+      try {
+        const user = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        })
+          .then(() => {})
+          .catch((error) => {
+            // An error occurred
+            // ...
+          });
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        await setDoc(userRef, {
+          name: name,
+          email: email,
+          id: auth.currentUser.uid,
+        });
+        showToast("User registered successfully!", "success");
+
+        navigate("/", {
+          state: {
+            message: "User registered successfully!",
+            status: "success",
+          },
+        });
+      } catch (error) {
+        showToast(`${error.code}, please try again`, "error");
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col relative md:flex-row ">
       <Link to="/">
@@ -28,25 +84,38 @@ const Register = () => {
             </Link>
           </p>
         </div>
-        <div className="flex flex-col gap-4 mt-10">
+        <form className="flex flex-col gap-4 mt-10">
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
             <h2>Name</h2>
-            <input className="w-full ml-[58px]" type={"text"} />
+            <input
+              name="name"
+              className="w-full ml-[58px]"
+              type={"text"}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
           </div>
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
             <h2>Email</h2>
-            <input className="w-full ml-[63px]" type={"text"} />
+            <input
+              name="email"
+              className="w-full ml-[63px]"
+              type={"text"}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
           </div>
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
             <h2>Password</h2>
-            <input className="w-full ml-8" type={"password"} />
-          </div>
-
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
-            <h2>Remember me</h2>
             <input
-              className=" checked:bg-black hover:checked:bg-black default:right-0  indeterminate:bg-black "
-              type={"checkbox"}
+              name="password"
+              className="w-full ml-8"
+              type={"password"}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
           </div>
 
@@ -61,13 +130,16 @@ const Register = () => {
               </Link>
             </div>
             <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
-              <Link className="flex m-0 p-2 items-center justify-between">
+              <button
+                onClick={handleRegisterUser}
+                className="flex row m-0 p-2 center w-full items-center justify-between"
+              >
                 <h1>Register</h1>
-                <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
-              </Link>
+                <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10 float-right" />
+              </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

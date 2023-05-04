@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import floatingCups from "../Assets/floatingCups.png";
 import cups from "../Assets/cups.png";
@@ -7,7 +7,21 @@ import kpjCup from "../Assets/KPG-cup.png";
 import { IoArrowForward, IoPersonCircleOutline } from "react-icons/io5";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase-config";
+import showToast from "../components/Toast";
+import { useLocation, useNavigate } from "react-router-dom";
+
 function Home() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
   const people = [
     {
       name: "Mohammad Almosallam",
@@ -64,7 +78,7 @@ function Home() {
 
         <section className="flex flex-col shadow-lg my-28  mx-4  md:mx-24 md:my-44 md:flex-row  ">
           <div className="flex-1">
-            <img class=" w-[100%] h-[100%] object-cover" src={cups} />
+            <img className=" w-[100%] h-[100%] object-cover" src={cups} />
           </div>
           <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
             <p className="text-sm  ">Lorem fugiat qui</p>
@@ -86,7 +100,7 @@ function Home() {
 
         <section className="flex flex-col md:flex-row-reverse my-28  md:mx-24 md:my-44  mx-4">
           <div className="flex-1">
-            <img class=" w-[100%] h-[100%] object-cover" src={smallCup} />
+            <img className=" w-[100%] h-[100%] object-cover" src={smallCup} />
           </div>
           <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
             <p className="text-sm  ">Lorem fugiat qui</p>

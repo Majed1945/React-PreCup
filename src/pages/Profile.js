@@ -32,11 +32,11 @@ const Profile = () => {
     ) {
       showToast("Please add all fields", "error");
     } else {
-      updateProfile(auth.currentUser, {
-        displayName: fName + " " + lName,
-      })
+      updateEmail(auth.currentUser, email)
         .then(() => {
-          return updateEmail(auth.currentUser, email);
+          return updateProfile(auth.currentUser, {
+            displayName: fName + " " + lName,
+          });
         })
         .then(() => {
           const userRef = doc(db, "users", auth.currentUser.uid);

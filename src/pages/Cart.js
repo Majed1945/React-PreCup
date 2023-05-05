@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import cupImage from "../Assets/KPG-cup.png";
 import { IoAddOutline, IoRemoveOutline, IoTrashOutline } from "react-icons/io5";
+import { auth } from "../firebase-config";
 const Cart = () => {
   const item = {
     id: 1,

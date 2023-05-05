@@ -102,9 +102,7 @@ function Navbar() {
         </div>
       </div>
       <nav
-        className={`sticky z-[2] backdrop-blur-sm md:flex hidden ${
-          visible ? "top-0" : "0"
-        } flex items-center w-[100%] p-4 pt-8 px-16  justify-between `}
+        className={`sticky z-[2] backdrop-blur-sm md:flex hidden top-0 flex items-center w-[100%] p-4 pt-8 px-16  justify-between `}
       >
         <div>
           <Link to="/" className="flex items-center text-xl font-bold">
@@ -147,9 +145,7 @@ function Navbar() {
 
       {/* For mobile version */}
       <nav
-        className={`sticky z-[2]  backdrop-blur-sm md:hidden  ${
-          visible ? "top-0" : "0"
-        } flex items-center w-[100%] p-4 pt-8 px-8  justify-between `}
+        className={`sticky z-[2]  backdrop-blur-sm md:hidden top-0 flex items-center w-[100%] p-4 pt-8 px-8  justify-between `}
       >
         <div>
           <Link to="/" className=" text-xl flex items-center font-bold">

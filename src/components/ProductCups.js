@@ -18,8 +18,8 @@ function ProductCups(props) {
           <IoBookmarkOutline className={"w-[1.3rem] h-[1.3rem]"} />
         )}
       </span>
-      <div>
-        <img src={props.img} />
+      <div className="w-[300px] h-[300px] flex m-auto">
+        <img src={props.img} className={"m-auto w-[250px]"} />
       </div>
       <div className="p-4 flex bg-gray-50 justify-between ">
         <div>
@@ -35,7 +35,7 @@ function ProductCups(props) {
           <p>{props.size}oz</p>
         </div>
       </div>
-      <Link to="/productDetails">
+      <Link to={`/productDetails/${props.id}`}>
         <div className="bg-black  justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-b-md">
           <p>CUSTOMIZE</p>
           <IoArrowForward className="transition group-hover:translate-x-1 " />

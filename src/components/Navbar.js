@@ -9,9 +9,34 @@ import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import logo from "../Assets/logo.png";
+import { auth } from "../firebase-config";
+import { signOut } from "firebase/auth";
+import showToast from "./Toast";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
 function Navbar() {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, [user]);
+
+  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const [isAiVisible, setIsAiVisible] = useState(true);
+  const navigate = useNavigate();
+  function handleLogInOut() {
+    if (user !== null) {
+      signOut(auth);
+      showToast("Successfully singed out!", "success");
+      navigate("/")
+    } else {
+      navigate("/login");
+    }
+  }
+
   return (
     <>
       <div
@@ -102,17 +127,19 @@ function Navbar() {
           </li>
         </ul>
         <div className="flex items-center gap-4">
+          <h2> {user !== null ? "Wellcome " + user.displayName : ""}</h2>
+
           <Link to="/cart">
             <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
           </Link>
-          <Link
-            to="/login"
+          <button
+            onClick={handleLogInOut}
             className={
               "bg-black text-white rounded-lg p-1  flex items-center gap-2"
             }
           >
             <IoLogOutOutline className=" w-6 h-6 text-center  block m-auto" />
-          </Link>
+          </button>
         </div>
       </nav>
 

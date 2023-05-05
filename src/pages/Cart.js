@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import cupImage from "../Assets/KPG-cup.png";
+import { IoAddOutline, IoRemoveOutline, IoTrashOutline } from "react-icons/io5";
+import { auth } from "../firebase-config";
 import logo from "../Assets/logo.png";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import {

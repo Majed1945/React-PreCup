@@ -1,9 +1,68 @@
 import Navbar from "../components/Navbar";
 import { IoPersonOutline } from "react-icons/io5";
+import { useState } from "react";
+import showToast from "../components/Toast";
+import { auth, db } from "../firebase-config";
+import { updateProfile, updateEmail } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [fName, setFname] = useState("");
+  const [lName, setLname] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  function handleUpdateProfile(e) {
+    e.preventDefault();
+    if (
+      email === "" ||
+      phone === "" ||
+      fName === "" ||
+      lName === "" ||
+      address === "" ||
+      city === "" ||
+      state === "" ||
+      zip === ""
+    ) {
+      showToast("Please add all fields", "error");
+    } else {
+      updateEmail(auth.currentUser, email)
+        .then(() => {
+          return updateProfile(auth.currentUser, {
+            displayName: fName + " " + lName,
+          });
+        })
+        .then(() => {
+          const userRef = doc(db, "users", auth.currentUser.uid);
+          return updateDoc(userRef, {
+            name: fName + " " + lName,
+            email,
+            phone,
+            address,
+            city,
+            zip,
+            state,
+          });
+        })
+        .then(() => {
+          navigate("/");
+          showToast("User Successfully updated!", "success");
+        })
+        .catch((error) => {
+          toast(`error, ${error.code}`, "error");
+        });
+    }
+  }
   return (
     <div>
       <Navbar />
+
       <form className="flex flex-col mx-10 md:mx-[20%] my-[5%]">
         <div className="space-y-12">
           <div className="">
@@ -20,6 +79,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setFname(e.target.value);
+                    }}
                     type="text"
                     name="first-name"
                     id="first-name"
@@ -38,6 +100,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setLname(e.target.value);
+                    }}
                     type="text"
                     name="last-name"
                     id="last-name"
@@ -56,6 +121,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                     id="email"
                     name="email"
                     type="email"
@@ -74,6 +142,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
                     id="email"
                     name="email"
                     type="email"
@@ -92,6 +163,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setAddress(e.target.value);
+                    }}
                     type="text"
                     name="street-address"
                     id="street-address"
@@ -110,6 +184,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setCity(e.target.value);
+                    }}
                     type="text"
                     name="city"
                     id="city"
@@ -128,6 +205,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setState(e.target.value);
+                    }}
                     type="text"
                     name="region"
                     id="region"
@@ -146,6 +226,9 @@ const Profile = () => {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setZip(e.target.value);
+                    }}
                     type="text"
                     name="postal-code"
                     id="postal-code"
@@ -156,6 +239,7 @@ const Profile = () => {
               </div>
               <div className="sm:col-span-6">
                 <button
+                  onClick={handleUpdateProfile}
                   type="submit"
                   className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm  w-full transition hover:bg-gray-900 hover:-translate-y-1 ease-in-out"
                 >

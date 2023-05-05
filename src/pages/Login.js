@@ -2,7 +2,28 @@ import noonCup from "../Assets/noonCup.png";
 import logo from "../Assets/logo.png";
 import { Link } from "react-router-dom";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
+import showToast from "../components/Toast";
+import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  async function handleSignIn() {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showToast("Successfully logged in!", "success");
+      navigate("/", {
+        state: { message: "Successfully logged in!", status: "success" },
+      });
+    } catch (error) {
+      showToast(`${error.code}, please try again`, "error");
+    }
+  }
   return (
     <div className="flex flex-col relative md:flex-row ">
       <Link to="/">
@@ -30,28 +51,35 @@ const Login = () => {
         </div>
         <div className="flex flex-col gap-4 mt-10">
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
-            <h2>Name</h2>
-            <input className="w-full ml-[58px]" type={"text"} />
+            <h2>Email</h2>
+            <input
+              className="w-full ml-[58px]"
+              type={"text"}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
           </div>
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
             <h2>Password</h2>
-            <input className="w-full ml-8" type={"password"} />
-          </div>
-
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
-            <h2>Remember me</h2>
             <input
-              className=" checked:bg-black hover:checked:bg-black default:right-0  indeterminate:bg-black "
-              type={"checkbox"}
+              className="w-full ml-8"
+              type={"password"}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
           </div>
 
           <div className="flex gap-4 font-serif justify-between items-center ">
             <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
-              <Link className="flex m-0 p-2 items-center justify-between">
+              <button
+                className="flex row m-0 p-2 center w-full items-center justify-between"
+                onClick={handleSignIn}
+              >
                 <h1>Log in</h1>
                 <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>

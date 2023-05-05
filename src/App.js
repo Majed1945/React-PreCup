@@ -9,7 +9,7 @@ import Confirmation from "./pages/Confirmation";
 import Products from "./pages/Products";
 import Ai from "./pages/Ai";
 import ProductDetails from "./pages/ProductDetails";
-
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <Routes>

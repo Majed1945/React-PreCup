@@ -21,7 +21,7 @@ function App() {
       <Route exact path="/checkOut" element={<Payment />} />
       <Route exact path="/confirmation" element={<Confirmation />} />
       <Route exact path="/products" element={<Products />} />
-      <Route exact path="/productDetails" element={<ProductDetails />} />
+      <Route exact path="/productDetails/:id" element={<ProductDetails />} />
       <Route exact path="/ai" element={<Ai />} />
     </Routes>
   );

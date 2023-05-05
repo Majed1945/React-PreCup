@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   IoAddOutline,
   IoArrowBackOutline,
@@ -7,15 +7,32 @@ import {
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import kpjCup from "../Assets/KPG-cup.png";
+import { useParams } from "react-router-dom";
+import { db } from "../firebase-config.js";
+import { doc, getDoc } from "firebase/firestore";
 
 function ProductDetails() {
   const navigate = useNavigate();
+  const [productInfo, setProductInfo] = useState({});
+  const { id } = useParams();
+  const getProductById = async (productId) => {
+    const productRef = doc(db, "Products", productId);
 
+    const productDoc = await getDoc(productRef);
+    // console.log(productDoc.data());
+    return productDoc.data();
+  };
+  useEffect(() => {
+    getProductById(id).then((info) => {
+      setProductInfo(info);
+    });
+  }, []);
+  console.log(productInfo);
   return (
     <div className="flex flex-col md:flex-row ">
       <div className="w-full md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
         <div>
-          <img src={kpjCup} className="md:scale-150 z-[-999]  " />
+          <img src={productInfo.img} className="md:scale-150 z-[-999]  " />
         </div>
       </div>
       <div className=" w-full md:w-[50%] z-[2] p-6 md:p-16 my-auto">
@@ -31,16 +48,11 @@ function ProductDetails() {
           <h3>Back</h3>
         </Link>
         <div className=" my-4 mt-8 text-5xl font-serif">
-          <h1>
-            Fancy <span className=" font-metal ">Pineapple</span>
-          </h1>
+          <h1>{productInfo.name}</h1>
         </div>
         <div>
           <p className="font-extralight tracking-widest ">
-            Reprehenderit sunt commodo Lorem ut reprehenderit Lorem magna magna
-            laboris officia occaecat ipsum. Pariatur esse sit elit enim
-            excepteur consectetur cupidatat labore. Lorem excepteur id elit ad
-            est commo.
+            {productInfo.description}
           </p>
         </div>
         <div className="flex flex-col gap-4 mt-10">
@@ -84,7 +96,7 @@ function ProductDetails() {
           </div>
           <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
             <h2>Price</h2>
-            <h2>0.71 SAR</h2>
+            <h2>{productInfo.price} SAR</h2>
           </div>
           <div className="flex gap-4 justify-between items-center ">
             <div className="rounded-full  md:text-2xl w-full px-[3px] border-[1px] border-black">

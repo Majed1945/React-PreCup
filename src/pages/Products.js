@@ -95,7 +95,6 @@ export default function Products() {
                         <motion.div
                           whileHover={{ scale: 1.04 }}
                           whileTap={{ scale: 0.95 }}
-                          variants={item}
                         >
                           <ProductCups
                             id={e.id}
@@ -130,7 +129,6 @@ export default function Products() {
                         <motion.div
                           whileHover={{ scale: 1.04 }}
                           whileTap={{ scale: 0.95 }}
-                          variants={item}
                         >
                           <ProductCups
                             id={e.id}

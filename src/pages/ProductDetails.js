@@ -6,14 +6,13 @@ import {
   IoRemoveOutline,
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import kpjCup from "../Assets/KPG-cup.png";
 import { useParams } from "react-router-dom";
 import { db, auth } from "../firebase-config.js";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import showToast from "../components/Toast";
 
 function ProductDetails() {
-  const navigate = useNavigate();
+ const navigate = useNavigate();
   const [productInfo, setProductInfo] = useState({});
   const { id } = useParams();
   const getProductById = async (productId) => {
@@ -55,9 +54,12 @@ function ProductDetails() {
   }
   return (
     <div className="flex flex-col md:flex-row ">
-      <div className="w-full md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
+      <div className="w-full md:w-[50%] flex items-center bg-black justify-center overflow-hidden md:h-screen ">
         <div>
-          <img src={productInfo.img} className="md:scale-150 z-[-999]  " />
+          <img
+            src={productInfo.img}
+            className="md:scale-150 z-[-999]  w-[300px] h-[300px] object-cover"
+          />
         </div>
       </div>
       <div className=" w-full md:w-[50%] z-[2] p-6 md:p-16 my-auto">

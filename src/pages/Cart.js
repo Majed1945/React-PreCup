@@ -20,6 +20,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import showToast from "../components/Toast";
+
 const Cart = () => {
   const [items, setItems] = useState([]);
   const [shippingOption, setShippingOption] = useState("standard");

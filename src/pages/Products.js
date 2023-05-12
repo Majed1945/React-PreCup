@@ -20,26 +20,7 @@ export default function Products() {
     };
     getProducts();
   }, []);
-  console.log(cups);
-  const container = {
-    hidden: { opacity: 1, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delayChildren: 0.6,
-        staggerChildren: 0.5,
-        duration: 0.9,
-      },
-    },
-  };
-  const item = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 1,
-      opacity: 1,
-    },
-  };
+
   return (
     <>
       <Navbar />
@@ -67,12 +48,7 @@ export default function Products() {
                   Products
                 </h2>
 
-                <motion.div
-                  variants={container}
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
-                >
+                <motion.div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
                   {cups
                     .filter((e) => e.type === "paper")
                     .map((e) => {
@@ -80,7 +56,6 @@ export default function Products() {
                         <motion.div
                           whileHover={{ scale: 1.04 }}
                           whileTap={{ scale: 0.95 }}
-                          variants={item}
                         >
                           <ProductCups
                             id={e.id}
@@ -109,12 +84,11 @@ export default function Products() {
                 className="pb-24 pt-6"
               >
                 <motion.div
-                  variants={container}
                   initial="hidden"
                   animate="visible"
                   className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
                 >
-                  {cups
+{cups
                     .filter((e) => e.type === "plastic")
                     .map((e) => {
                       return (

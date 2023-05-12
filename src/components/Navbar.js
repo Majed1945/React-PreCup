@@ -31,12 +31,19 @@ function Navbar() {
     if (user !== null) {
       signOut(auth);
       showToast("Successfully singed out!", "success");
-      navigate("/")
+      navigate("/");
     } else {
       navigate("/login");
     }
   }
-
+  function handleCartClick() {
+    if (auth.currentUser === null) {
+      navigate("/login");
+      showToast("Please login before addign items to your cart", "warning");
+    } else {
+      navigate("/cart");
+    }
+  }
   return (
     <>
       <div
@@ -129,9 +136,9 @@ function Navbar() {
         <div className="flex items-center gap-4">
           <h2> {user !== null ? "Wellcome " + user.displayName : ""}</h2>
 
-          <Link to="/cart">
+          <button onClick={handleCartClick}>
             <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
-          </Link>
+          </button>
           <button
             onClick={handleLogInOut}
             className={

@@ -7,9 +7,15 @@ import { updateProfile, updateEmail } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { useEffect } from "react";
 const Profile = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    if (auth.currentUser === null) {
+      navigate("/login");
+    }
+  }, []);
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [fName, setFname] = useState("");

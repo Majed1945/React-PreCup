@@ -12,7 +12,7 @@ import Navbar from "../components/Navbar";
 
 export default function Products() {
   const [cups, setCups] = useState([]);
-  const cupsCollectionRef = collection(db, "Products");
+  const cupsCollectionRef = collection(db, "products");
   useEffect(() => {
     const getProducts = async () => {
       const data = await getDocs(cupsCollectionRef);
@@ -114,18 +114,25 @@ export default function Products() {
                   animate="visible"
                   className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
                 >
-                  {PLASTIC_CUPS_PRODUCTS.map((e) => {
-                    return (
-                      <motion.div variants={item}>
-                        <ProductCups
-                          img={e.img}
-                          name={e.name}
-                          price={e.price}
-                          size={e.size}
-                        />
-                      </motion.div>
-                    );
-                  })}
+                  {cups
+                    .filter((e) => e.type === "plastic")
+                    .map((e) => {
+                      return (
+                        <motion.div
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.95 }}
+                          variants={item}
+                        >
+                          <ProductCups
+                            id={e.id}
+                            img={e.img}
+                            name={e.name}
+                            price={e.price}
+                            size={e.size}
+                          />
+                        </motion.div>
+                      );
+                    })}
                 </motion.div>
               </section>
             </div>
@@ -142,16 +149,25 @@ export default function Products() {
                 className="pb-24 pt-6"
               >
                 <div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
-                  {FOAM_CUPS_PRODUCTS.map((e) => {
-                    return (
-                      <ProductCups
-                        img={e.img}
-                        name={e.name}
-                        price={e.price}
-                        size={e.size}
-                      />
-                    );
-                  })}
+                  {cups
+                    .filter((e) => e.type === "foam")
+                    .map((e) => {
+                      return (
+                        <motion.div
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.95 }}
+                          variants={item}
+                        >
+                          <ProductCups
+                            id={e.id}
+                            img={e.img}
+                            name={e.name}
+                            price={e.price}
+                            size={e.size}
+                          />
+                        </motion.div>
+                      );
+                    })}
                 </div>
               </section>
             </div>

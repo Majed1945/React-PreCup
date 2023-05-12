@@ -1,52 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import cupImage from "../Assets/KPG-cup.png";
+import { auth, db } from "../firebase-config";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+  addDoc,
+} from "firebase/firestore";
 
+import showToast from "../components/Toast";
 const CheckOut = () => {
+  const [cards, setCards] = useState([]);
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState("2023");
-  const item = {
-    id: 1,
-    name: "Paper Cup",
-    image: "",
-    description: "Double walled",
-    quantity: 3,
-    price: 400,
-  };
-  const item2 = {
-    id: 2,
-    name: "Paper Cup",
-    image: "",
-    description: "Single Walled",
-    quantity: 5,
-    price: 600,
-  };
-  const item3 = {
-    id: 3,
-    name: "Glass Cup",
-    image: "",
-    description: "Premium",
-    quantity: 2,
-    price: 300,
-  };
-  const item4 = {
-    id: 4,
-    name: "Plastic Cup",
-    image: "",
-    description: "For Kids",
-    quantity: 2,
-    price: 300,
-  };
-
-  const [items, setItems] = useState([item, item2, item3, item4]);
+  const [items, setItems] = useState([]);
   const [shippingOption, setShippingOption] = useState("standard");
-  const [shippingAddress, setShippingAddress] = useState("Address one");
+  const [cardName, setCardName] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
+  const [cardNumber, setCardNumber] = useState(0);
+  const [cardSecurityCode, setCardSecurityCode] = useState(0);
 
-  function removeItem(id) {
-    setItems(items.filter((item) => item.id != id));
-  }
+  useEffect(() => {
+    const getCartContent = async () => {
+      const cartCollectionRef = collection(db, "cart");
+      const data = await getDocs(cartCollectionRef);
+      const filteredData = data.docs
+        .map((doc) => ({
+          ...doc.data(),
+          productId: doc.id,
+        }))
+        .filter((doc) => auth.currentUser.uid === doc.id);
+      setItems(filteredData);
+    };
+    getCartContent();
+  }, []);
+
   function calculateTotalPrice() {
     let sum = 0;
     items.forEach((item) => {
@@ -59,6 +52,30 @@ const CheckOut = () => {
     }
 
     return sum;
+  }
+  async function handleAddCard(e) {
+    e.preventDefault();
+    console.log(
+      cardName,
+      cardHolder,
+      cardNumber,
+      cardSecurityCode,
+      month,
+      year
+    );
+    try {
+      await addDoc(collection(db, "card"), {
+        cardName,
+        cardHolder,
+        cardNumber,
+        cardSecurityCode,
+        month,
+        year,
+      });
+      showToast("Successfully added!", "success");
+    } catch (error) {
+      showToast("error,", error, "error");
+    }
   }
 
   return (
@@ -79,65 +96,80 @@ const CheckOut = () => {
             <div className="flex border-b py-8">
               <h1 className="font-bold text-2xl">Check Out</h1>
             </div>
-            <form action="" class="mt-10 flex flex-col space-y-4 ">
+            <form className="mt-10 flex flex-col space-y-4 ">
               <div>
-                <label for="card-name" class="text-xs font-bold text-gray-500">
+                <label
+                  htmlFor="card-name"
+                  className="text-xs font-bold text-gray-500"
+                >
                   Card Name
                 </label>
                 <input
+                  onChange={(e) => {
+                    setCardName(e.target.value);
+                  }}
                   type="text"
                   id="card-name"
                   name="card-name"
                   placeholder="Card Name"
-                  class="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
-                />
-              </div>
-              <div>
-                <label for="card-name" class="text-xs font-bold text-gray-500">
-                  Card Holder
-                </label>
-                <input
-                  type="text"
-                  id="card-name"
-                  name="card-name"
-                  placeholder="Name on Card"
-                  class="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                  className="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                 />
               </div>
               <div>
                 <label
-                  for="card-number"
-                  class="text-xs font-bold text-gray-500"
+                  htmlFor="card-holder"
+                  className="text-xs font-bold text-gray-500"
+                >
+                  Card Holder
+                </label>
+                <input
+                  onChange={(e) => {
+                    setCardHolder(e.target.value);
+                  }}
+                  type="text"
+                  id="card-holder"
+                  name="card-holder"
+                  placeholder="Name on Card"
+                  className="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="card-number"
+                  className="text-xs font-bold text-gray-500"
                 >
                   Card Number
                 </label>
                 <input
+                  onChange={(e) => {
+                    setCardNumber(e.target.value);
+                  }}
                   type="text"
                   id="card-number"
                   name="card-number"
                   placeholder="1234-5678-XXXX-XXXX"
-                  class="w-full rounded border-gray-300 bg-gray-50 py-3 px-4 pr-10 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                  className="w-full rounded border-gray-300 bg-gray-50 py-3 px-4 pr-10 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                 />
                 <img
                   src="/images/uQUFIfCYVYcLK0qVJF5Yw.png"
                   alt=""
-                  class="absolute bottom-3 right-3 max-h-4"
+                  className="absolute bottom-3 right-3 max-h-4"
                 />
               </div>
               <div className="flex flex-col">
-                <p class="text-xs font-bold text-gray-500 w-full">
+                <p className="text-xs font-bold text-gray-500 w-full">
                   Expiration date
                 </p>
-                <div class="grid grid-cols-3 gap-1 py-1">
-                  <div class="w-full grid-span-1">
-                    <label for="month" class="sr-only">
+                <div className="grid grid-cols-3 gap-1 py-1">
+                  <div className="w-full grid-span-1">
+                    <label htmlFor="month" className="sr-only">
                       Select expiration month
                     </label>
                     <select
                       name="month"
                       id="month"
                       value={month}
-                      class="w-full cursor-pointer rounded border-gray-300 py-3 px-4 bg-gray-50  text-sm shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                      className="w-full cursor-pointer rounded border-gray-300 py-3 px-4 bg-gray-50  text-sm shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                     >
                       <option value="01">01</option>
                       <option value="02">02</option>
@@ -154,15 +186,15 @@ const CheckOut = () => {
                     </select>
                   </div>
 
-                  <div class="w-full grid-span-1">
-                    <label for="year" class="sr-only">
+                  <div className="w-full grid-span-1">
+                    <label htmlFor="year" className="sr-only">
                       Select expiration year
                     </label>
                     <select
                       name="year"
                       id="year"
                       value={year}
-                      class="w-full cursor-pointer rounded border-gray-300 py-3 px-4 bg-gray-50  text-sm shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                      className="w-full cursor-pointer rounded border-gray-300 py-3 px-4 bg-gray-50  text-sm shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                     >
                       <option value="2023">2023</option>
                       <option value="2024">2024</option>
@@ -174,21 +206,27 @@ const CheckOut = () => {
                       <option value="2030">2030</option>
                     </select>
                   </div>
-                  <div class="w-full grid-span-1">
-                    <label for="security-code" class="sr-only">
+                  <div className="w-full grid-span-1">
+                    <label htmlFor="security-code" className="sr-only">
                       Security code
                     </label>
                     <input
+                      onChange={(e) => {
+                        setCardSecurityCode(e.target.value);
+                      }}
                       type="text"
                       id="security-code"
                       name="security-code"
                       placeholder="Security code"
-                      class="w-full  rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
+                      className="w-full  rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                     />
                   </div>
                 </div>
                 <div className="w-full ">
-                  <button className="mt-2 rounded-md bg-black py-3 px-4 text-sm font-bold text-white shadow-sm  w-full transition hover:bg-gray-900 ">
+                  <button
+                    onClick={handleAddCard}
+                    className="mt-2 rounded-md bg-black py-3 px-4 text-sm font-bold text-white shadow-sm  w-full transition hover:bg-gray-900 "
+                  >
                     Add
                   </button>
                 </div>
@@ -198,33 +236,33 @@ const CheckOut = () => {
               <h1 className="font-bold text-2xl">My Cards</h1>
             </div>
             <div className="flex flex-col gap-2">
-              <div class="flex items-center pl-4 border border-gray-200 rounded ">
+              <div className="flex items-center pl-4 border border-gray-200 rounded ">
                 <input
                   checked
                   id="bordered-radio-1"
                   type="radio"
                   value=""
                   name="bordered-radio"
-                  class="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
+                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
                 />
                 <label
-                  for="bordered-radio-1"
-                  class="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
+                  htmlFor="bordered-radio-1"
+                  className="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
                 >
                   My Visa
                 </label>
               </div>
-              <div class="flex items-center pl-4 border border-gray-200 rounded ">
+              <div className="flex items-center pl-4 border border-gray-200 rounded ">
                 <input
                   id="bordered-radio-2"
                   type="radio"
                   value=""
                   name="bordered-radio"
-                  class="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
+                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
                 />
                 <label
-                  for="bordered-radio-2"
-                  class="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
+                  htmlFor="bordered-radio-2"
+                  className="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
                 >
                   My Mada
                 </label>
@@ -238,14 +276,14 @@ const CheckOut = () => {
               {items.map((item) => {
                 return (
                   <div
-                    key={item.id}
+                    key={item.productId}
                     className="flex hover:bg-gray-100 -mx-8 px-6 py-5"
                   >
                     <div className="flex w-4/5">
                       <div className="w-20">
                         <img
                           className="h-24 object-cover"
-                          src={cupImage}
+                          src={item.img}
                           alt=""
                         />
                       </div>

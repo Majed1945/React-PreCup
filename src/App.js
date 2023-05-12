@@ -25,7 +25,7 @@ function App() {
         <Route exact path="/productDetails/:id" element={<ProductDetails />} />
         <Route exact path="/ai" element={<Ai />} />
       </Routes>
-      <ToastContainer />
+<ToastContainer />{" "}
     </>
   );
 }

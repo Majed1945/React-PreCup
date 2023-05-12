@@ -1,65 +1,63 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
-import cupImage from "../Assets/KPG-cup.png";
 import {
   IoAddOutline,
   IoCashOutline,
   IoRemoveOutline,
   IoTrashOutline,
 } from "react-icons/io5";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import logo from "../Assets/logo.png";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import showToast from "../components/Toast";
 
 const Cart = () => {
-  const item = {
-    id: 1,
-    name: "Paper Cup",
-    image: "",
-    description: "Double walled",
-    quantity: 3,
-    price: 400,
-  };
-  const item2 = {
-    id: 2,
-    name: "Paper Cup",
-    image: "",
-    description: "Single Walled",
-    quantity: 5,
-    price: 600,
-  };
-  const item3 = {
-    id: 3,
-    name: "Glass Cup",
-    image: "",
-    description: "Premium",
-    quantity: 2,
-    price: 300,
-  };
-  const item4 = {
-    id: 4,
-    name: "Plastic Cup",
-    image: "",
-    description: "For Kids",
-    quantity: 2,
-    price: 300,
-  };
-
-  const [items, setItems] = useState([item, item2, item3, item4]);
+  const [items, setItems] = useState([]);
   const [shippingOption, setShippingOption] = useState("standard");
   const [shippingAddress, setShippingAddress] = useState("Address one");
+  useEffect(() => {
+    const getCartContent = async () => {
+      const cartCollectionRef = collection(db, "cart");
+      const data = await getDocs(cartCollectionRef);
+      const filteredData = data.docs
+        .map((doc) => ({
+          ...doc.data(),
+          productId: doc.id,
+        }))
+        .filter((doc) => auth.currentUser.uid === doc.id);
+      setItems(filteredData);
+    };
+    getCartContent();
+  }, []);
 
-  function removeItem(id) {
-    setItems(items.filter((item) => item.id != id));
+  async function removeItem(id) {
+    setItems(items.filter((item) => item.productId !== id));
+    console.log(id);
+    try {
+      await deleteDoc(doc(db, "cart", id));
+      showToast("Successfully deleted", "success");
+    } catch (error) {
+      showToast(error.code, "error");
+    }
   }
+
   function calculateTotalPrice() {
     let sum = 0;
-    items.forEach((item) => {
-      sum += item.price * item.quantity;
-    });
+    items
+      .filter((item) => item.id === auth.currentUser.uid)
+      .forEach((item) => {
+        sum += item.price * item.quantity;
+      });
     if (shippingOption === "standard") {
       sum += 10;
     } else if (shippingOption === "fast") {
@@ -70,36 +68,52 @@ const Cart = () => {
   }
   function calculateSubotalPrice() {
     let sum = 0;
-    items.forEach((item) => {
-      sum += item.price * item.quantity;
-    });
+    items
+      .filter((item) => item.id === auth.currentUser.uid)
+      .forEach((item) => {
+        sum += item.price * item.quantity;
+      });
 
     return sum;
   }
-  function reduceQuantity(id) {
+  async function reduceQuantity(id) {
     setItems(
       items.filter((item) => {
-        if (item.id != id) {
+        if (item.productId !== id) {
           return item;
         } else {
-          item.quantity === 0
-            ? (item.quantity = 0)
+          item.quantity === 1
+            ? (item.quantity = 1)
             : (item.quantity = item.quantity - 1);
           return item;
         }
       })
     );
+    await setDoc(
+      doc(db, "cart", id),
+      {
+        quantity: items.filter((item) => item.productId === id)[0].quantity,
+      },
+      { merge: true }
+    );
   }
-  function increaseQuantity(id) {
+  async function increaseQuantity(id) {
     setItems(
       items.filter((item) => {
-        if (item.id != id) {
+        if (item.productId !== id) {
           return item;
         } else {
           item.quantity = item.quantity + 1;
           return item;
         }
       })
+    );
+    await setDoc(
+      doc(db, "cart", id),
+      {
+        quantity: items.filter((item) => item.productId === id)[0].quantity,
+      },
+      { merge: true }
     );
   }
   function updateShippingOption(e) {
@@ -108,7 +122,15 @@ const Cart = () => {
   function updateShippingAddress(e) {
     setShippingAddress(e.target.value);
   }
+  const navigate = useNavigate();
 
+  function handleCheckout() {
+    if (items.length === 0) {
+      showToast("Please add items to your cart", "warning");
+    } else {
+      navigate("/checkout");
+    }
+  }
   return (
     <>
       <Navbar />
@@ -191,7 +213,7 @@ const Cart = () => {
                 return (
                   <motion.div
                     layout="position"
-                    key={item.id}
+                    key={item.productId}
                     className="flex items-center  hover:bg-gray-100 rounded-lg -mx-8 px-6 py-5"
                   >
                     <div className="flex w-2/4">
@@ -199,13 +221,13 @@ const Cart = () => {
                         <div className="flex flex-row-reverse">
                           <img
                             className="h-24 object-cover"
-                            src={cupImage}
+                            src={item.img}
                             alt=""
                           />
                           <span className="text-center md:hidden font-bold text-sm">
                             <div
                               onClick={() => {
-                                removeItem(item.id);
+                                removeItem(item.productId);
                               }}
                               className="m-auto md:w-fit h-full flex  items-center cursor-pointer bg-red-500 p-[0.1rem]  rounded-tl-lg rounded-bl-lg text-white md:rounded-lg "
                             >
@@ -231,7 +253,7 @@ const Cart = () => {
                           <button
                             className="  border-black rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
                             onClick={() => {
-                              increaseQuantity(item.id);
+                              increaseQuantity(item.productId);
                             }}
                           >
                             <IoAddOutline className="w-full h-full" />
@@ -251,7 +273,7 @@ const Cart = () => {
                           <button
                             className="  bg-black text-white rounded-[50%] border-[1px] items-center flex justify-center w-5 h-5"
                             onClick={() => {
-                              reduceQuantity(item.id);
+                              reduceQuantity(item.productId);
                             }}
                           >
                             <IoRemoveOutline className="w-full h-full" />
@@ -267,7 +289,7 @@ const Cart = () => {
                         whileHover={{ scale: 1.2 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => {
-                          removeItem(item.id);
+                          removeItem(item.productId);
                         }}
                         className="m-auto w-fit cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-lg "
                       >
@@ -335,11 +357,11 @@ const Cart = () => {
                 <span>Total cost</span>
                 <span>${calculateTotalPrice()}</span>
               </div>
-              <Link to="/checkOut">
+              <button onClick={handleCheckout}>
                 <button className="mt-2 rounded-md bg-black py-3 px-4 text-sm font-bold text-white shadow-sm  w-full transition hover:bg-gray-900 ">
                   Check Out
                 </button>
-              </Link>
+              </button>
             </div>
           </div>
         </div>

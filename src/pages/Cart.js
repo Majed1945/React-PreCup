@@ -22,9 +22,22 @@ import {
 import showToast from "../components/Toast";
 
 const Cart = () => {
+  const [user, setUser] = useState({});
   const [items, setItems] = useState([]);
   const [shippingOption, setShippingOption] = useState("standard");
-  const [shippingAddress, setShippingAddress] = useState("Address one");
+  const [shippingAddress, setShippingAddress] = useState("No address");
+
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await getDocs(collection(db, "users"));
+      setUser(
+        data.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((doc) => doc.id === auth.currentUser.uid)
+      );
+    };
+    getUser();
+  }, []);
   useEffect(() => {
     const getCartContent = async () => {
       const cartCollectionRef = collection(db, "cart");
@@ -39,7 +52,10 @@ const Cart = () => {
     };
     getCartContent();
   }, []);
-
+  useEffect(() => {
+    // Update shipping address with the user's address
+    setShippingAddress(user?.[0]?.address);
+  }, [user]);
   async function removeItem(id) {
     setItems(items.filter((item) => item.productId !== id));
     console.log(id);
@@ -124,13 +140,28 @@ const Cart = () => {
   }
   const navigate = useNavigate();
 
-  function handleCheckout() {
+  async function handleCheckout() {
     if (items.length === 0) {
       showToast("Please add items to your cart", "warning");
     } else {
-      navigate("/checkout");
+      try {
+        for (let i = 0; i < items.length; i++) {
+          await setDoc(
+            doc(db, "cart", items[i].productId),
+            {
+              address: shippingAddress,
+              shipping: shippingOption,
+            },
+            { merge: true }
+          );
+        }
+        navigate("/checkout");
+      } catch (error) {
+        showToast("error,", error.code, "error");
+      }
     }
   }
+
   return (
     <>
       <Navbar />
@@ -339,16 +370,14 @@ const Cart = () => {
             </div>
             <div>
               <label className="font-medium inline-block mt-2 mb-1 text-sm uppercase">
-                Address
+                Adress
               </label>
               <select
                 className="block p-2 text-gray-600  rounded-lg w-full text-sm"
                 value={shippingAddress}
                 onChange={updateShippingAddress}
               >
-                <option value="Address one">Address one</option>
-                <option value="Address two">Address two</option>
-                <option value="Address three">Address three</option>
+                <option value={shippingAddress}>{shippingAddress}</option>
               </select>
             </div>
 

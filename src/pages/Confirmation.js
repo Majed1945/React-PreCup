@@ -3,95 +3,28 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
-import cupImage from "../Assets/KPG-cup.png";
-
+import { auth, db } from "../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+import showToast from "../components/Toast";
+import { useLocation, useNavigate } from "react-router-dom";
 const Confirmation = () => {
-  const item = {
-    id: 1,
-    name: "Paper Cup",
-    image: "",
-    description: "Double walled",
-    quantity: 3,
-    price: 400,
-  };
-  const item2 = {
-    id: 2,
-    name: "Paper Cup",
-    image: "",
-    description: "Single Walled",
-    quantity: 5,
-    price: 600,
-  };
-  const item3 = {
-    id: 3,
-    name: "Glass Cup",
-    image: "",
-    description: "Premium",
-    quantity: 2,
-    price: 300,
-  };
-  const item4 = {
-    id: 4,
-    name: "Plastic Cup",
-    image: "",
-    description: "For Kids",
-    quantity: 2,
-    price: 300,
-  };
+  const location = useLocation();
+  const receivedData = location.state.currentOrderId;
+  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState({});
 
-  const [items, setItems] = useState([item, item2, item3, item4]);
-  const [shippingOption, setShippingOption] = useState("standard");
-  const [shippingAddress, setShippingAddress] = useState("Address one");
-
-  function removeItem(id) {
-    setItems(items.filter((item) => item.id != id));
-  }
-  function calculateTotalPrice() {
-    let sum = 0;
-    items.forEach((item) => {
-      sum += item.price * item.quantity;
-    });
-    if (shippingOption === "standard") {
-      sum += 10;
-    } else if (shippingOption === "fast") {
-      sum += 30;
-    }
-
-    return sum;
-  }
-  function reduceQuantity(id) {
-    setItems(
-      items.filter((item) => {
-        if (item.id != id) {
-          return item;
-        } else {
-          item.quantity === 0
-            ? (item.quantity = 0)
-            : (item.quantity = item.quantity - 1);
-          return item;
-        }
-      })
-    );
-  }
-  function increaseQuantity(id) {
-    setItems(
-      items.filter((item) => {
-        if (item.id != id) {
-          return item;
-        } else {
-          item.quantity = item.quantity + 1;
-          return item;
-        }
-      })
-    );
-  }
-  function updateShippingOption(e) {
-    setShippingOption(e.target.value);
-  }
-  function updateShippingAddress(e) {
-    setShippingAddress(e.target.value);
-  }
-
+  useEffect(() => {
+    const getOrders = async () => {
+      const data = await getDocs(collection(db, "order"));
+      setOrders(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getOrders();
+  }, []);
+  useEffect(() => {
+    const filteredOrder = orders.filter((order) => order.id === receivedData);
+    setOrder(filteredOrder);
+  }, [orders, receivedData]);
+  console.log(order[0]);
   return (
     <>
       <Navbar />
@@ -115,7 +48,7 @@ const Confirmation = () => {
                   Thanks for your order{" "}
                 </h1>{" "}
                 <h3 className="font-base text-md text-gray-400">
-                  The confirmation will be sent to your email
+                  Never hesitate coming again!{" "}
                 </h3>
               </div>
               <hr />
@@ -124,7 +57,7 @@ const Confirmation = () => {
                   Transaction Date
                 </h1>
                 <h2 className="font-base text-md text-gray-400">
-                  {new Date().toLocaleString() + ""}
+                  {order.length > 0 && order[0].date}
                 </h2>
               </div>
               <hr />
@@ -132,7 +65,9 @@ const Confirmation = () => {
                 <h1 className="font-semibold text-lg text-black">
                   Payment Method
                 </h1>
-                <h2 className="font-base text-md text-gray-400">Visa</h2>
+                <h2 className="font-base text-md text-gray-400">
+                  {order.length > 0 && order[0].paymentMethod}
+                </h2>
               </div>
               <hr />
               <div className="py-2 px-3 flex flex-col m-atuo">
@@ -140,7 +75,7 @@ const Confirmation = () => {
                   Shippment Method
                 </h1>
                 <h2 className="font-base text-md text-gray-400">
-                  Standard shipping - $10.00
+                  {order.length > 0 && order[0].orderDetail[0].shipping}
                 </h2>
               </div>
               <hr />
@@ -148,42 +83,42 @@ const Confirmation = () => {
                 <h1 className="font-semibold text-lg text-black">
                   Order Summary
                 </h1>
-                <div className="flex flex-col mt-4 ">
-                  {items.map((item) => {
-                    return (
-                      <div
-                        key={item.id}
-                        className="flex hover:bg-gray-100 -mx-8 px-6 py-3"
-                      >
-                        <div className="flex w-4/5">
-                          <div className="w-20">
-                            <img
-                              className="h-24 object-cover"
-                              src={cupImage}
-                              alt=""
-                            />
-                          </div>
-                          <div className="flex flex-col justify-between ml-4 flex-grow">
-                            <span className="font-bold text-sm">
-                              {item.name}
-                            </span>
-                            <span className="text-gray-400  text-xs">
-                              ${item.price}
-                            </span>
-                            <span className="text-gray-400 text-xs">
-                              x{item.quantity}
-                            </span>
-                          </div>
-                        </div>
-
-                        <span className="text-center w-1/5 font-bold text-sm">
-                          ${item.price * item.quantity}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                <div className="flex flex-col mt-4 "></div>
               </div>
+              {order.length > 0 &&
+                order[0].orderDetail.map((order) => {
+                  return (
+                    <div
+                      key={order.id}
+                      className="flex hover:bg-gray-100 mx-[2%] pb-3"
+                    >
+                      <div className="flex w-4/5">
+                        <div className="w-[20%]">
+                          <img
+                            className="h-24 object-cover"
+                            src={order.img}
+                            alt=""
+                          />
+                        </div>
+                        <div className="flex flex-col justify-between ml-4 flex-grow">
+                          <span className="font-bold text-sm">
+                            {order.name}
+                          </span>
+                          <span className="text-gray-400  text-xs">
+                            ${order.price}
+                          </span>
+                          <span className="text-gray-400 text-xs">
+                            x{order.quantity}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="text-center w-1/5 font-bold text-sm">
+                        ${order.price * order.quantity}
+                      </span>
+                    </div>
+                  );
+                })}
               <hr />
 
               <div className="py-2 px-3 flex flex-col m-atuo ">
@@ -191,7 +126,7 @@ const Confirmation = () => {
                   Grand Total
                 </h1>
                 <h2 className="font-base text-md text-gray-400">
-                  ${calculateTotalPrice()}
+                  ${order.length > 0 && order[0].price}
                 </h2>
               </div>
               <div>

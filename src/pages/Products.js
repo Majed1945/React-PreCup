@@ -88,7 +88,7 @@ export default function Products() {
                   animate="visible"
                   className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
                 >
-{cups
+                  {cups
                     .filter((e) => e.type === "plastic")
                     .map((e) => {
                       return (

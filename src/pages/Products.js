@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { db } from "../firebase-config.js";
+import { auth, db } from "../firebase-config.js";
 import { collection, getDocs } from "firebase/firestore";
-import {
-  FOAM_CUPS_PRODUCTS,
-  PAPER_CUPS_PRODUCTS,
-  PLASTIC_CUPS_PRODUCTS,
-} from "../ProductsData.js";
 import ProductCups from "../components/ProductCups";
 import Navbar from "../components/Navbar";
+import AddProductCup from "../components/AddProductCup";
 
 export default function Products() {
   const [cups, setCups] = useState([]);
+  const admin =
+    auth.currentUser !== null
+      ? auth.currentUser.displayName === "admin"
+      : false;
   const cupsCollectionRef = collection(db, "products");
+
   useEffect(() => {
     const getProducts = async () => {
       const data = await getDocs(cupsCollectionRef);
@@ -20,7 +21,6 @@ export default function Products() {
     };
     getProducts();
   }, []);
-
   return (
     <>
       <Navbar />
@@ -53,11 +53,9 @@ export default function Products() {
                     .filter((e) => e.type === "paper")
                     .map((e) => {
                       return (
-                        <motion.div
-                          whileHover={{ scale: 1.04 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
+                        <motion.div whileHover={{ y: -6 }}>
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -67,6 +65,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked={"paper"} />
+                  ) : null}
                 </motion.div>
               </section>
             </div>
@@ -76,18 +77,14 @@ export default function Products() {
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">
                   Plastic Cups
                 </h1>
-                <div>{/* <IoCashOutline className={" w-6 h-6 "} /> */}</div>
               </div>
 
               <section
                 aria-labelledby="products-heading"
                 className="pb-24 pt-6"
               >
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 "
-                >
+
+                <motion.div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
                   {cups
                     .filter((e) => e.type === "plastic")
                     .map((e) => {
@@ -97,6 +94,7 @@ export default function Products() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -106,6 +104,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked="plastic" />
+                  ) : null}
                 </motion.div>
               </section>
             </div>
@@ -131,6 +132,7 @@ export default function Products() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -140,6 +142,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked="foam" />
+                  ) : null}
                 </div>
               </section>
             </div>

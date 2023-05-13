@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { db } from "../firebase-config.js";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import EditProductCup from "../components/EditProductCup.js";
+import showToast from "../components/Toast.js";
+import { IoCloseOutline } from "react-icons/io5";
 
 function AdminDashboard() {
   const [cups, setCups] = useState([]);
@@ -27,6 +30,21 @@ function AdminDashboard() {
     getAllProducts();
     getAllOrders();
   }, []);
+
+  async function deleteProduct(id) {
+    try {
+      await deleteDoc(doc(db, "products", id));
+      const cupsCollectionRef = collection(db, "products");
+      const getProducts = async () => {
+        const data = await getDocs(cupsCollectionRef);
+        setCups(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getProducts();
+      showToast("Successfully deleted, ", "success");
+    } catch (error) {
+      showToast("error, " + error.code, "error");
+    }
+  }
   return (
     <>
       <main className="mx-auto max-w-7xl px-8 md:px-16  ">
@@ -113,24 +131,34 @@ function AdminDashboard() {
                     </th>
                   </tr>
                 </thead>
-                {cups.map((eachUser) => (
+                {cups.map((eachProduct) => (
                   <tbody>
                     <tr class="bg-white border-b ">
                       <th
                         scope="row"
                         class="px-6 py-4 font-medium first-letter:uppercase text-gray-900 whitespace-nowrap "
                       >
-                        {eachUser.name}
+                        {eachProduct.name}
                       </th>
                       <td class="px-6 py-4  first-letter:uppercase">
-                        {eachUser.type}
+                        {eachProduct.type}
                       </td>
-                      <td class="px-6 py-4 uppercase">{eachUser.size}</td>
-                      <td class="px-6 py-4">{"$" + eachUser.price}</td>
-                      <td class="px-6 py-4">
-                        <button class="font-medium text-blue-600  hover:underline">
-                          Edit
-                        </button>
+                      <td class="px-6 py-4 uppercase">{eachProduct.size}</td>
+                      <td class="px-6 py-4">{"$" + eachProduct.price}</td>
+                      <td class="px-6 py-4 flex gap-1">
+                        <div className="bg-black p-2 rounded-lg">
+                          <EditProductCup id={eachProduct.id} />
+                        </div>
+                        <div>
+                          <button
+                            onClick={() => {
+                              deleteProduct(eachProduct.id);
+                            }}
+                            className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-2   gap-1 text-white  rounded-lg"
+                          >
+                            <IoCloseOutline />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

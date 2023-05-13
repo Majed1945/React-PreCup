@@ -77,10 +77,9 @@ function EditProductCup(props) {
     >
       <button
         onClick={() => getProductById()}
-        className="bg-black w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-bl-md"
+        className="bg-black w-full justify-center text-center text flex items-center font-thin gap-1 text-white "
       >
-        <p className="transition group-hover:translate-x-1 ">EDIT</p>
-        <IoCreateOutline className="transition group-hover:translate-x-1 " />
+        <IoCreateOutline />
       </button>
 
       <Transition.Root show={open} as={Fragment}>

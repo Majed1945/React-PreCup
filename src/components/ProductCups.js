@@ -6,7 +6,6 @@ import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import showToast from "./Toast";
 import EditProductCup from "./EditProductCup";
 function ProductCups(props) {
-  console.log(props.type);
   const admin =
     auth.currentUser !== null
       ? auth.currentUser.email === "admin@gmail.com"
@@ -47,15 +46,16 @@ function ProductCups(props) {
       </div>
       {admin ? (
         <div className="flex">
-          <EditProductCup setCups={props.setCups} id={props.id} />
+          <div className=" bg-black w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white ">
+            <EditProductCup setCups={props.setCups} id={props.id} />
+          </div>
           <button
             onClick={() => {
               deleteProduct();
             }}
-            className=" bg-red-600 w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-br-md"
+            className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-br-md"
           >
-            <p className="transition group-hover:translate-x-1 ">DELETE</p>
-            <IoCloseOutline className="transition group-hover:translate-x-1 " />
+            <IoCloseOutline />
           </button>
         </div>
       ) : (

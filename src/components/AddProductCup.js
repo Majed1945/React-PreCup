@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { IoAdd } from "react-icons/io5";
 import { IoAddCircle } from "react-icons/io5";
 import { db } from "../firebase-config.js";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import showToast from "./Toast";
 function AddProductCup(props) {
   const [open, setOpen] = useState(false);
@@ -17,19 +17,38 @@ function AddProductCup(props) {
   const [imageURL, setImageURL] = useState("");
   async function addProduct() {
     try {
-      await addDoc(collection(db, "products"), {
-        name: name,
-        description: description,
-        type: type,
-        price: price,
-        size: size,
-        img: imageURL,
-      });
-      showToast("Successfully added new product, ", "success");
+      if (
+        name === "" ||
+        description === "" ||
+        type === "" ||
+        price === "" ||
+        size === "" ||
+        imageURL === ""
+      ) {
+        showToast("Please fill all fields ", "error");
+      } else {
+        await addDoc(collection(db, "products"), {
+          name: name,
+          description: description,
+          type: type,
+          price: price,
+          size: size,
+          img: imageURL,
+        });
+        const cupsCollectionRef = collection(db, "products");
+        const getProducts = async () => {
+          const data = await getDocs(cupsCollectionRef);
+          props.setCups(
+            data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          );
+        };
+        getProducts();
+        showToast("Successfully added new product, ", "success");
+        setOpen(false);
+      }
     } catch (error) {
       showToast("error, " + error.code, "error");
     }
-    setOpen(false);
   }
   return (
     <div

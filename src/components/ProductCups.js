@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoArrowForward, IoTrashOutline } from "react-icons/io5";
 import { auth, db } from "../firebase-config";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import showToast from "./Toast";
 function ProductCups(props) {
   const admin =
@@ -13,6 +13,12 @@ function ProductCups(props) {
   async function deleteProduct() {
     try {
       await deleteDoc(doc(db, "products", props.id));
+      const cupsCollectionRef = collection(db, "products");
+      const getProducts = async () => {
+        const data = await getDocs(cupsCollectionRef);
+        props.setCups(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getProducts();
       showToast("Successfully deleted, ", "success");
     } catch (error) {
       showToast("error, " + error.code, "error");

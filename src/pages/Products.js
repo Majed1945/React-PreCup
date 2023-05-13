@@ -21,7 +21,6 @@ export default function Products() {
     };
     getProducts();
   }, []);
-
   return (
     <>
       <Navbar />
@@ -56,6 +55,7 @@ export default function Products() {
                       return (
                         <motion.div whileHover={{ y: -6 }}>
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -65,7 +65,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
-                  {admin ? <AddProductCup checked={"paper"} /> : null}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked={"paper"} />
+                  ) : null}
                 </motion.div>
               </section>
             </div>
@@ -91,6 +93,7 @@ export default function Products() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -100,7 +103,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
-                  {admin ? <AddProductCup checked="plastic" /> : null}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked="plastic" />
+                  ) : null}
                 </motion.div>
               </section>
             </div>
@@ -126,6 +131,7 @@ export default function Products() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <ProductCups
+                            setCups={setCups}
                             id={e.id}
                             img={e.img}
                             name={e.name}
@@ -135,7 +141,9 @@ export default function Products() {
                         </motion.div>
                       );
                     })}
-                  {admin ? <AddProductCup checked="foam" /> : null}
+                  {admin ? (
+                    <AddProductCup setCups={setCups} checked="foam" />
+                  ) : null}
                 </div>
               </section>
             </div>

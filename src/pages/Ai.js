@@ -22,7 +22,7 @@ function Ai() {
 
   deepai.setApiKey("d11f386a-bbab-4040-9775-f91c44c23675");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -75,7 +75,6 @@ function Ai() {
       },
       data: `text="3D cup mockup for a paper cup with a white background. The cup has ${prompt} printed on its cover."&size=1024x1024&background=white&invert=false&brightness=0&grid_size=1`,
     });
-    console.log(response);
 
     const docRef = await addDoc(collection(db, "products"), {
       description: prompt,

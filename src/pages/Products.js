@@ -61,6 +61,8 @@ export default function Products() {
                             name={e.name}
                             price={e.price}
                             size={e.size}
+                            description={e.description}
+                            type={e.type}
                           />
                         </motion.div>
                       );
@@ -83,7 +85,6 @@ export default function Products() {
                 aria-labelledby="products-heading"
                 className="pb-24 pt-6"
               >
-
                 <motion.div className="grid grid-cols-1  gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 ">
                   {cups
                     .filter((e) => e.type === "plastic")
@@ -100,6 +101,7 @@ export default function Products() {
                             name={e.name}
                             price={e.price}
                             size={e.size}
+                            desc={e.description}
                           />
                         </motion.div>
                       );
@@ -138,6 +140,7 @@ export default function Products() {
                             name={e.name}
                             price={e.price}
                             size={e.size}
+                            desc={e.description}
                           />
                         </motion.div>
                       );

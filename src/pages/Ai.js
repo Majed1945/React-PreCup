@@ -1,10 +1,5 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import cupMockup from "../Assets/cupMockup.jpeg";
-import logo from "../Assets/logo.png";
-import { PAPER_CUPS_PRODUCTS } from "../ProductsData";
-import { Link } from "react-router-dom";
-import { IoArrowForward } from "react-icons/io5";
 import { useState } from "react";
 import showToast from "../components/Toast";
 import axios from "axios";
@@ -18,11 +13,10 @@ const deepai = require("deepai");
 function Ai() {
   const [AIProducts, setAIProducts] = useState([]);
   const [prompt, setPrompt] = useState("");
-  const [aiUrl, setAiUrl] = useState("");
 
   deepai.setApiKey("d11f386a-bbab-4040-9775-f91c44c23675");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 

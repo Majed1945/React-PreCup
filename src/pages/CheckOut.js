@@ -184,7 +184,7 @@ const CheckOut = () => {
                   htmlFor="card-name"
                   className="text-xs font-bold text-gray-500"
                 >
-                  Card Name
+                  Card Type
                 </label>
                 <input
                   onChange={(e) => {
@@ -194,7 +194,7 @@ const CheckOut = () => {
                   type="text"
                   id="card-name"
                   name="card-name"
-                  placeholder="Card Name"
+                  placeholder="VISA, Master Card"
                   className="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                 />
               </div>
@@ -213,7 +213,7 @@ const CheckOut = () => {
                   type="text"
                   id="card-holder"
                   name="card-holder"
-                  placeholder="Name on Card"
+                  placeholder="Card Holder"
                   className="mt-1 w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-black"
                 />
               </div>

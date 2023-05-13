@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IoArrowForward, IoTrashOutline } from "react-icons/io5";
+import { IoArrowForward, IoCloseOutline } from "react-icons/io5";
 import { auth, db } from "../firebase-config";
 import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import showToast from "./Toast";
+import EditProductCup from "./EditProductCup";
 function ProductCups(props) {
   const admin =
     auth.currentUser !== null
-      ? auth.currentUser.displayName === "admin"
+      ? auth.currentUser.email === "admin@gmail.com"
       : false;
 
   async function deleteProduct() {
@@ -26,16 +27,6 @@ function ProductCups(props) {
   }
   return (
     <div className="w-full col-span-1  relative group translation hover:-translate-y-1  ease-in-out duration-150 border-gray-100 border rounded-3xl overflow-hidden  ">
-      {admin && (
-        <span
-          onClick={() => {
-            deleteProduct();
-          }}
-          className=" absolute top-4 cursor-pointer left-4"
-        >
-          <IoTrashOutline className=" scale-150 cursor-pointer bg-red-500 p-[0.1rem] text-white rounded-md " />
-        </span>
-      )}
       <div className="w-[300px] h-[300px] flex m-auto">
         <img src={props.img} className={"m-auto w-[250px]"} />
       </div>
@@ -53,12 +44,28 @@ function ProductCups(props) {
           <p>{props.size}oz</p>
         </div>
       </div>
-      <Link to={`/productDetails/${props.id}`}>
-        <div className="bg-black  justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-b-md">
-          <p>CUSTOMIZE</p>
-          <IoArrowForward className="transition group-hover:translate-x-1 " />
+      {admin ? (
+        <div className="flex">
+          <div className=" bg-black w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white ">
+            <EditProductCup setCups={props.setCups} id={props.id} />
+          </div>
+          <button
+            onClick={() => {
+              deleteProduct();
+            }}
+            className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-br-md"
+          >
+            <IoCloseOutline />
+          </button>
         </div>
-      </Link>
+      ) : (
+        <Link to={`/productDetails/${props.id}`}>
+          <div className="bg-black  justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-b-md">
+            <p>CUSTOMIZE</p>
+            <IoArrowForward className="transition group-hover:translate-x-1 " />
+          </div>
+        </Link>
+      )}
     </div>
   );
 }

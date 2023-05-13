@@ -23,7 +23,6 @@ function Navbar() {
     });
   }, [user]);
 
-  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const [isAiVisible, setIsAiVisible] = useState(true);
   const navigate = useNavigate();
@@ -36,14 +35,7 @@ function Navbar() {
       navigate("/login");
     }
   }
-  function handleCartClick() {
-    if (auth.currentUser === null) {
-      navigate("/login");
-      showToast("Please login before addign items to your cart", "warning");
-    } else {
-      navigate("/cart");
-    }
-  }
+
   return (
     <>
       <div
@@ -119,7 +111,11 @@ function Navbar() {
         </div>
         <ul className="flex  gap-8">
           <li>
-            <Link to="/">Home </Link>
+            <Link to="/">
+              {user !== null && user.displayName === "admin"
+                ? "Report"
+                : "Home"}
+            </Link>
           </li>
           <li>
             <Link to="/products">Products </Link>
@@ -134,11 +130,11 @@ function Navbar() {
           </li>
         </ul>
         <div className="flex items-center gap-4">
-          <h2> {user !== null ? "Wellcome " + user.displayName : ""}</h2>
+          <h2> {user !== null ? user.displayName : ""}</h2>
 
-          <button onClick={handleCartClick}>
+          <Link to="/cart">
             <IoCartOutline className=" w-6 h-6 text-center  block m-auto" />
-          </button>
+          </Link>
           <button
             onClick={handleLogInOut}
             className={

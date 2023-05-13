@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import cupImage from "../Assets/KPG-cup.png";
@@ -12,8 +12,9 @@ import {
   setDoc,
   addDoc,
 } from "firebase/firestore";
-
 import showToast from "../components/Toast";
+import { toast } from "react-toastify";
+
 const CheckOut = () => {
   const [cards, setCards] = useState([]);
   const [month, setMonth] = useState("01");
@@ -22,9 +23,23 @@ const CheckOut = () => {
   const [shippingOption, setShippingOption] = useState("standard");
   const [cardName, setCardName] = useState("");
   const [cardHolder, setCardHolder] = useState("");
-  const [cardNumber, setCardNumber] = useState(0);
-  const [cardSecurityCode, setCardSecurityCode] = useState(0);
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardSecurityCode, setCardSecurityCode] = useState("");
+  const [selectedCard, setSelectedCard] = useState("");
+  const [user, setUser] = useState({});
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await getDocs(collection(db, "users"));
+      setUser(
+        data.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((doc) => doc.id === auth.currentUser.uid)
+      );
+    };
+    getUser();
+  }, []);
   useEffect(() => {
     const getCartContent = async () => {
       const cartCollectionRef = collection(db, "cart");
@@ -39,7 +54,50 @@ const CheckOut = () => {
     };
     getCartContent();
   }, []);
+  useEffect(() => {
+    const getCards = async () => {
+      const cardCollectionRef = collection(db, "card");
+      const data = await getDocs(cardCollectionRef);
+      const cards = data.docs
+        .map((doc) => ({
+          ...doc.data(),
+          cardId: doc.id,
+        }))
+        .filter((doc) => auth.currentUser.uid === doc.userId);
+      setCards(cards);
+    };
+    getCards();
+  }, []);
+  async function handleOrder() {
+    if (selectedCard === "") {
+      if (cards.length === 0) {
+        showToast("Please add a card");
+      } else {
+        showToast("Please select a card");
+      }
+    } else {
+      try {
+        const docRef = await addDoc(collection(db, "order"), {
+          userId: auth.currentUser.uid,
+          userName: auth.currentUser.displayName,
+          paymentMethod: selectedCard,
+          orderDetail: items,
+          price: calculateTotalPrice(),
+          shippedTo: user[0].address,
+          date: new Date().toLocaleString(),
+        });
+        showToast("Thanks for your order", "success");
 
+        for (let i = 0; i < items.length; i++) {
+          await deleteDoc(doc(db, "cart", items[i].productId));
+        }
+
+        navigate("/confirmation", { state: { currentOrderId: docRef.id } });
+      } catch (error) {
+        showToast("error, ", error.code, "error");
+      }
+    }
+  }
   function calculateTotalPrice() {
     let sum = 0;
     items.forEach((item) => {
@@ -53,28 +111,52 @@ const CheckOut = () => {
 
     return sum;
   }
+
   async function handleAddCard(e) {
     e.preventDefault();
-    console.log(
-      cardName,
-      cardHolder,
-      cardNumber,
-      cardSecurityCode,
-      month,
-      year
-    );
-    try {
-      await addDoc(collection(db, "card"), {
-        cardName,
-        cardHolder,
-        cardNumber,
-        cardSecurityCode,
-        month,
-        year,
-      });
-      showToast("Successfully added!", "success");
-    } catch (error) {
-      showToast("error,", error, "error");
+    if (
+      cardName === "" ||
+      cardHolder === "" ||
+      cardNumber === "" ||
+      cardSecurityCode === "" ||
+      month === "" ||
+      year === ""
+    ) {
+      toast("Please fill all card information fields", "error");
+    } else {
+      try {
+        await addDoc(collection(db, "card"), {
+          cardName,
+          cardHolder,
+          cardNumber,
+          cardSecurityCode,
+          month,
+          year,
+          userId: auth.currentUser.uid,
+        });
+        showToast("Card successfully added!", "success");
+        setCards((prev) => {
+          return [
+            ...prev,
+            {
+              cardName,
+              cardHolder,
+              cardNumber,
+              cardSecurityCode,
+              month,
+              year,
+              userId: auth.currentUser.uid,
+            },
+          ];
+        });
+        setCardHolder("");
+        setCardName("");
+        setCardName("");
+        setCardNumber("");
+        setCardSecurityCode("");
+      } catch (error) {
+        showToast("error,", error, "error");
+      }
     }
   }
 
@@ -108,6 +190,7 @@ const CheckOut = () => {
                   onChange={(e) => {
                     setCardName(e.target.value);
                   }}
+                  value={cardName}
                   type="text"
                   id="card-name"
                   name="card-name"
@@ -123,6 +206,7 @@ const CheckOut = () => {
                   Card Holder
                 </label>
                 <input
+                  value={cardHolder}
                   onChange={(e) => {
                     setCardHolder(e.target.value);
                   }}
@@ -141,6 +225,7 @@ const CheckOut = () => {
                   Card Number
                 </label>
                 <input
+                  value={cardNumber}
                   onChange={(e) => {
                     setCardNumber(e.target.value);
                   }}
@@ -211,6 +296,7 @@ const CheckOut = () => {
                       Security code
                     </label>
                     <input
+                      value={cardSecurityCode}
                       onChange={(e) => {
                         setCardSecurityCode(e.target.value);
                       }}
@@ -236,37 +322,29 @@ const CheckOut = () => {
               <h1 className="font-bold text-2xl">My Cards</h1>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center pl-4 border border-gray-200 rounded ">
-                <input
-                  checked
-                  id="bordered-radio-1"
-                  type="radio"
-                  value=""
-                  name="bordered-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
-                />
-                <label
-                  htmlFor="bordered-radio-1"
-                  className="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
+              {cards.map((card) => (
+                <div
+                  key={card.userId}
+                  className="flex items-center pl-4 border border-gray-200 rounded "
                 >
-                  My Visa
-                </label>
-              </div>
-              <div className="flex items-center pl-4 border border-gray-200 rounded ">
-                <input
-                  id="bordered-radio-2"
-                  type="radio"
-                  value=""
-                  name="bordered-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
-                />
-                <label
-                  htmlFor="bordered-radio-2"
-                  className="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
-                >
-                  My Mada
-                </label>
-              </div>
+                  <input
+                    onClick={() => {
+                      setSelectedCard(card.cardName);
+                    }}
+                    id="bordered-radio-1"
+                    type="radio"
+                    value=""
+                    name="bordered-radio"
+                    className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-black "
+                  />
+                  <label
+                    htmlFor="bordered-radio-1"
+                    className="w-full py-4 ml-2 text-sm font-medium text-gray-900 "
+                  >
+                    {card.cardName}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
           <div id="summary" className="w-full lg:w-2/6 px-8 py-10 lg:mt-[40px]">
@@ -311,11 +389,13 @@ const CheckOut = () => {
                 <span>Grand Total</span>
                 <span>${calculateTotalPrice()}</span>
               </div>
-              <Link to="/confirmation">
-                <button className="mt-2 rounded-md bg-black py-3 px-4 text-sm font-bold text-white shadow-sm  w-full transition hover:bg-gray-900 ">
-                  Order
-                </button>
-              </Link>
+
+              <button
+                onClick={handleOrder}
+                className="mt-2 rounded-md bg-black py-3 px-4 text-sm font-bold text-white shadow-sm  w-full transition hover:bg-gray-900 "
+              >
+                Order
+              </button>
             </div>
           </div>
         </div>

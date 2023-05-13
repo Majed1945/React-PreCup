@@ -72,7 +72,7 @@ const Login = () => {
           </div>
 
           <div className="flex gap-4 font-serif justify-between items-center ">
-            <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
+            <div className="rounded-full  md:text-2xl w-full px-[3px] bg-black text-white">
               <button
                 className="flex row m-0 p-2 center w-full items-center justify-between"
                 onClick={handleSignIn}

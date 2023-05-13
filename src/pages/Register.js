@@ -19,10 +19,12 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+
   async function createUserDocument(user, name) {}
   const handleRegisterUser = async (e) => {
     e.preventDefault();
-    if (email === "" || password === "" || name === "") {
+    if (email === "" || password === "" || name === "" || address === "") {
       showToast("Please fill all fields", "error");
     } else {
       try {
@@ -44,6 +46,7 @@ const Register = () => {
           name: name,
           email: email,
           id: auth.currentUser.uid,
+          address,
         });
         showToast("User registered successfully!", "success");
 
@@ -118,18 +121,19 @@ const Register = () => {
               }}
             />
           </div>
-
+          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
+            <h2>Address</h2>
+            <input
+              name="address"
+              className="w-full ml-8"
+              type={"text"}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            />
+          </div>
           <div className=" flex flex-col md:flex-row gap-4 font-serif justify-between items-center ">
             <div className="rounded-full  md:text-2xl w-full px-[3px] bg-black text-white">
-              <Link className="flex m-0 p-2 items-center justify-between">
-                <div className="flex gap-3 items-center">
-                  <IoLogoGoogle />
-                  <h1>Sing up with google</h1>
-                </div>
-                <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
-              </Link>
-            </div>
-            <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
               <button
                 onClick={handleRegisterUser}
                 className="flex row m-0 p-2 center w-full items-center justify-between"

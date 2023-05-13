@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
-import { auth, db } from "../firebase-config";
+import { db } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
-import showToast from "../components/Toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const Confirmation = () => {
   const location = useLocation();
   const receivedData = location.state.currentOrderId;

@@ -6,13 +6,11 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import showToast from "../components/Toast";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   async function handleSignIn() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -27,11 +25,11 @@ const Login = () => {
   return (
     <div className="flex flex-col relative md:flex-row ">
       <Link to="/">
-        <img className=" absolute top-0 right-0 w-16  h-16" src={logo} />
+        <img className=" absolute top-0 right-0 w-16  h-16" src={logo} alt="A nice logo!"/>
       </Link>
       <div className="w-full  md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
         <div>
-          <img src={noonCup} className="md:scale-150 z-[-999]  " />
+          <img src={noonCup} className="md:scale-150 z-[-999]  " alt="A nice cup!"/>
         </div>
       </div>
       <div className=" w-full  md:w-[50%] z-[2] p-6 md:p-16 my-auto">

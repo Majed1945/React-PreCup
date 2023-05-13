@@ -44,7 +44,7 @@ function ProductCups(props) {
           <p>{props.size}oz</p>
         </div>
       </div>
-      {admin ? (
+      {admin && !props.isAiPage ? (
         <div className="flex">
           <div className=" bg-black w-full justify-center text-center text flex items-center font-thin p-3   gap-1 text-white ">
             <EditProductCup setCups={props.setCups} id={props.id} />
@@ -57,6 +57,10 @@ function ProductCups(props) {
           >
             <IoCloseOutline />
           </button>
+        </div>
+      ) : props.isAiPage && admin ? (
+        <div className="bg-black  justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-b-md">
+          <p>View Only</p>
         </div>
       ) : (
         <Link to={`/productDetails/${props.id}`}>

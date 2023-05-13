@@ -11,7 +11,7 @@ import {
 } from "react-icons/io5";
 import { auth, db } from "../firebase-config";
 import logo from "../Assets/logo.png";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { LayoutGroup, motion } from "framer-motion";
 import {
   collection,
   getDocs,
@@ -58,7 +58,6 @@ const Cart = () => {
   }, [user]);
   async function removeItem(id) {
     setItems(items.filter((item) => item.productId !== id));
-    console.log(id);
     try {
       await deleteDoc(doc(db, "cart", id));
       showToast("Successfully deleted", "success");
@@ -155,7 +154,7 @@ const Cart = () => {
             { merge: true }
           );
         }
-        navigate("/checkout");
+        navigate("/checkout", { state: { shipping: shippingOption } });
       } catch (error) {
         showToast("error,", error.code, "error");
       }
@@ -337,6 +336,7 @@ const Cart = () => {
             className="w-full relative overflow-hidden z-[3] bg-gray-50 rounded-2xl lg:w-1/4 px-8 py-10 lg:mt-[40px]"
           >
             <img
+              alt="A nice logo!"
               src={logo}
               className="absolute opacity-10 bottom-0   md:scale-150 z-[-99]  left-32"
             />

@@ -60,6 +60,20 @@ function AdminDashboard() {
       showToast("error, " + error.code, "error");
     }
   }
+  async function deleteOrder(id) {
+    try {
+      await deleteDoc(doc(db, "order", id));
+      const ordersCollectionRef = collection(db, "order");
+      const getOrders = async () => {
+        const data = await getDocs(ordersCollectionRef);
+        setOrders(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getOrders();
+      showToast("Successfully deleted, ", "success");
+    } catch (error) {
+      showToast("error, " + error.code, "error");
+    }
+  }
   return (
     <>
       <main className="mx-auto max-w-7xl px-8 md:px-16  ">
@@ -242,8 +256,13 @@ function AdminDashboard() {
                       </td>
                       <td class="px-6 py-4 uppercase">{eachOrder.date}</td>
                       <td class="px-6 py-4">
-                        <button class="font-medium text-blue-600  hover:underline">
-                          Edit
+                        <button
+                          onClick={() => {
+                            deleteOrder(eachOrder.id);
+                          }}
+                          className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-2   gap-1 text-white  rounded-lg"
+                        >
+                          <IoCloseOutline />
                         </button>
                       </td>
                     </tr>

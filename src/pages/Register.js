@@ -134,15 +134,6 @@ const Register = () => {
           </div>
           <div className=" flex flex-col md:flex-row gap-4 font-serif justify-between items-center ">
             <div className="rounded-full  md:text-2xl w-full px-[3px] bg-black text-white">
-              <Link className="flex m-0 p-2 items-center justify-between">
-                <div className="flex gap-3 items-center">
-                  <IoLogoGoogle />
-                  <h1>Sing up with google</h1>
-                </div>
-                <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10" />
-              </Link>
-            </div>
-            <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
               <button
                 onClick={handleRegisterUser}
                 className="flex row m-0 p-2 center w-full items-center justify-between"

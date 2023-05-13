@@ -5,7 +5,105 @@ import logo from "../Assets/logo.png";
 import { PAPER_CUPS_PRODUCTS } from "../ProductsData";
 import { Link } from "react-router-dom";
 import { IoArrowForward } from "react-icons/io5";
+import { useState } from "react";
+import showToast from "../components/Toast";
+import axios from "axios";
+import { motion } from "framer-motion";
+import ProductCups from "../components/ProductCups";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase-config";
+const { Configuration, OpenAIApi } = require("openai");
+const deepai = require("deepai");
+
 function Ai() {
+  const [AIProducts, setAIProducts] = useState([]);
+  const [prompt, setPrompt] = useState("");
+  const [aiUrl, setAiUrl] = useState("");
+
+  deepai.setApiKey("d11f386a-bbab-4040-9775-f91c44c23675");
+  const configuration = new Configuration({
+    apiKey: "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",
+  });
+  const openai = new OpenAIApi(configuration);
+
+  async function produceDell2AIOutput() {
+    showToast(
+      "Please wait about 4 seconds for the first AI model, and more 2 secods for the second!",
+      "success"
+    );
+    try {
+      const response = await openai.createImage({
+        prompt: `3D cup mockup for a paper cup with a white background. The cup should have ${prompt} printed on its cover.`,
+        n: 4,
+        size: "1024x1024",
+      });
+      const dell2Products = [];
+      for (let index = 0; index < response.data.data.length; index++) {
+        const docRef = await addDoc(collection(db, "products"), {
+          description: prompt,
+          img: response.data.data[index].url,
+          name: "AI Generated Cup!",
+          price: 20,
+          size: "M",
+          type: "AI Cup! - Dell-2 Model",
+        });
+        const docId = docRef.id; // Retrieve the ID of the added document
+        const data = {
+          description: `3D cup mockup for a paper cup with a white background. The cup has ${prompt} printed on its cover.`,
+          img: response.data.data[index].url,
+          name: "AI Generated Cup!",
+          price: 20,
+          size: "M",
+          type: "AI Cup! - Dell-2 Model",
+          id: docId, // Include the ID in the object
+        };
+        dell2Products.push(data);
+      }
+      setAIProducts(dell2Products);
+      produceDeepAIOutput();
+    } catch (error) {
+      showToast("error, " + error, "error");
+    }
+  }
+  async function produceDeepAIOutput() {
+    const response = await axios({
+      method: "post",
+      url: "https://api.deepai.org/api/text2img",
+      headers: {
+        "api-key": "d11f386a-bbab-4040-9775-f91c44c23675",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: `text="3D cup mockup for a paper cup with a white background. The cup has ${prompt} printed on its cover."&size=1024x1024&background=white&invert=false&brightness=0&grid_size=1`,
+    });
+    console.log(response);
+
+    const docRef = await addDoc(collection(db, "products"), {
+      description: prompt,
+      img: response.data.output_url,
+      name: "AI Generated Cup!",
+      price: 20,
+      size: "M",
+      type: "AI Cup! - Deep AI Model",
+    });
+    const docId = docRef.id; // Retrieve the ID of the added document
+    const data = {
+      description: `3D cup mockup for a paper cup with a white background. The cup has ${prompt} printed on its cover.`,
+      img: response.data.output_url,
+      name: "AI Generated Cup!",
+      price: 20,
+      size: "M",
+      type: "AI Cup! - Deep AI Model",
+      id: docId, // Include the ID in the object
+    };
+    setAIProducts((prev) => [...prev, data]);
+  }
+  function generateOutput() {
+    if (prompt === "") {
+      showToast("Please type something", "warning");
+    } else {
+      produceDell2AIOutput();
+    }
+  }
   return (
     <>
       <Navbar className="z-10" />
@@ -16,31 +114,38 @@ function Ai() {
           </h1>
           <div className="flex">
             <input
+              onChange={(e) => {
+                setPrompt(e.target.value);
+              }}
               type="text"
               class="bg-gray-50 border mb-8 border-r-0 rounded-tl-lg rounded-bl-lg rounded-tr-0  rounded-br-0 border-gray-300 text-gray-900 sm:text-sm focus:border-black focus:ring-0  w-full "
               placeholder="e.g. three red stripes with black dotted pattren"
               required=""
             />
-            <button class="bg-black text-white border p-2 md:px-6 mb-8  rounded-tr-lg  border-l-0 rounded-br-lg  border-black sm:text-sm focus:ring-0   ">
+            <button
+              onClick={generateOutput}
+              class="bg-black text-white border p-2 md:px-6 mb-8  rounded-tr-lg  border-l-0 rounded-br-lg  border-black sm:text-sm focus:ring-0   "
+            >
               ✨Generate✨
             </button>
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-            {PAPER_CUPS_PRODUCTS.map((e) => {
+            {AIProducts.map((product) => {
               return (
-                <div className="w-full col-span-1  animate-pulse relative group translation hover:-translate-y-1  ease-in-out duration-150 border-gray-100 border rounded-3xl overflow-hidden  ">
-                  <div>
-                    <img src={e.img} />
-                  </div>
-
-                  <Link to="/productDetails">
-                    <div className="bg-black  justify-center text-center text flex items-center font-thin p-3   gap-1 text-white  rounded-b-md">
-                      <p>CUSTOMIZE</p>
-                      <IoArrowForward className="transition group-hover:translate-x-1 " />
-                    </div>
-                  </Link>
-                </div>
+                <motion.div
+                  key={product.id}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <ProductCups
+                    id={product.id}
+                    img={product.img}
+                    name={product.name}
+                    price={product.price}
+                    size={product.size}
+                  />
+                </motion.div>
               );
             })}
             {/* {products.map((product) => (

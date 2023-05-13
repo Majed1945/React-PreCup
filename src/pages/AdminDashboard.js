@@ -5,6 +5,7 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import EditProductCup from "../components/EditProductCup.js";
 import showToast from "../components/Toast.js";
 import { IoCloseOutline } from "react-icons/io5";
+import EditUser from "../components/EditUser.js";
 
 function AdminDashboard() {
   const [cups, setCups] = useState([]);
@@ -40,6 +41,20 @@ function AdminDashboard() {
         setCups(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       };
       getProducts();
+      showToast("Successfully deleted, ", "success");
+    } catch (error) {
+      showToast("error, " + error.code, "error");
+    }
+  }
+  async function deleteUser(id) {
+    try {
+      await deleteDoc(doc(db, "users", id));
+      const usersCollectionRef = collection(db, "users");
+      const getUsers = async () => {
+        const data = await getDocs(usersCollectionRef);
+        setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getUsers();
       showToast("Successfully deleted, ", "success");
     } catch (error) {
       showToast("error, " + error.code, "error");
@@ -88,10 +103,20 @@ function AdminDashboard() {
                       <td class="px-6 py-4  first-letter:uppercase">
                         {eachUser.email}
                       </td>
-                      <td class="px-6 py-4">
-                        <button class="font-medium text-blue-600  hover:underline">
-                          Edit
-                        </button>
+                      <td class="px-6 py-4 items-center flex gap-1">
+                        <div className=" rounded-lg">
+                          <EditUser id={eachUser.id} />
+                        </div>
+                        <div className="  rounded-lg">
+                          <button
+                            onClick={() => {
+                              deleteUser(eachUser.id);
+                            }}
+                            className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-2   gap-1 text-white  rounded-lg"
+                          >
+                            <IoCloseOutline />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

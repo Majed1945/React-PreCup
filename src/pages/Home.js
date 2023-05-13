@@ -11,6 +11,7 @@ import { useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 import AdminDashboard from "./AdminDashboard";
+import { motion } from "framer-motion";
 
 function Home() {
   const [user, setUser] = useState({});
@@ -68,12 +69,22 @@ function Home() {
             </h1>
           </div>
           <div className="text-center my-16">
-            <h1 className="text-[4rem] font-bold">Cups at your need</h1>
-            <p className="  max-w-[50ch] m-auto">
-              Exercitation nisi Lorem incididunt sunt. Veniam nulla anim dolore
-              ad non velit consectetur. Sunt ex et qui exercitation adipisicing
-              nisi non magna. Quis amet elit ullamco minim
-            </p>
+            <motion.h1
+              initial={{ y: -50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-[4rem] font-bold"
+            >
+              Cups at your need
+            </motion.h1>
+            <motion.h2
+              initial={{ y: -50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1 }}
+              className=" text-xl"
+            >
+              The ultimate destination for coffee lovers around the world
+            </motion.h2>
           </div>
 
           <section className="flex flex-col shadow-lg my-28  mx-4  md:mx-24 md:my-44 md:flex-row  ">
@@ -81,20 +92,49 @@ function Home() {
               <img className=" w-[100%] h-[100%] object-cover" src={cups} />
             </div>
             <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
-              <p className="text-sm  ">Lorem fugiat qui</p>
-              <h1 className=" text-[3rem] font-bold">Cups?Logo? Print!</h1>
-              <h2 className="mt-5 text-[2rem] font-extralight ">8.99 SAR</h2>
-              <h3 className="mt-5 font-light">
-                Est ex officia velit laboris commodo Lorem ullamco voluptate est
-                est deserunt est. Aliquip ex consequat aliquip nostrud aute
-                excepteur magna ipsum laboris culpa. Anim reprehenderit mollit
-                ea labore quis cupidatat.
-              </h3>
-              <button className="mt-5 p-2 text-white hover:rounded-xl  flex  items-center gap-2 ease-in-out  duration-200 bg-black  w-fit ">
+              <motion.p
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="text-md w-fit bg-green-100 text-green-800  font-medium mr-2 px-2.5 py-0.5 rounded"
+              >
+                Best seller
+              </motion.p>
+              <motion.h1
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1 }}
+                className=" text-[3rem] font-bold"
+              >
+                KFUPM Patterns
+              </motion.h1>
+              <motion.h2
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.2 }}
+                className="mt-5 text-[2rem] font-extralight "
+              >
+                8.99 SAR
+              </motion.h2>
+              <motion.h3
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.4 }}
+                className="mt-5 font-light"
+              >
+                Introducing the eco-friendly KFUPM Cup, customizable and
+                biodegradable with any shape and featuring the iconic KFUPM
+                logo. Order now for sustainable branding at events and corporate
+                gatherings.
+              </motion.h3>
+              <Link
+                to={"/products"}
+                className="mt-5 p-2 text-white hover:rounded-xl  flex  items-center gap-2 ease-in-out  duration-200 bg-black  w-fit "
+              >
                 Explore now
                 <span></span>
                 <IoArrowForward />
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -103,29 +143,59 @@ function Home() {
               <img className=" w-[100%] h-[100%] object-cover" src={smallCup} />
             </div>
             <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
-              <p className="text-sm  ">Lorem fugiat qui</p>
-              <h1 className=" text-[3rem] font-bold">Cups?Logo? Print!</h1>
-              <h2 className="mt-5 text-[2rem] font-extralight ">8.99 SAR</h2>
-              <h3 className="mt-5 font-light">
-                Est ex officia velit laboris commodo Lorem ullamco voluptate est
-                est deserunt est. Aliquip ex consequat aliquip nostrud aute
-                excepteur magna ipsum laboris culpa. Anim reprehenderit mollit
-                ea labore quis cupidatat.
-              </h3>
-              <button className="mt-5 p-2 text-white hover:rounded-xl  flex  items-center gap-2 ease-in-out  duration-200 bg-black  w-fit ">
+              <motion.h1
+                initial={{ y: -50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className=" text-[3rem] font-bold"
+              >
+                Fancy Cups
+              </motion.h1>
+              <motion.h2
+                initial={{ y: -50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1 }}
+                className="mt-5 text-[2rem] font-extralight "
+              >
+                2.99 SAR
+              </motion.h2>
+              <motion.h3
+                initial={{ y: -50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.2 }}
+              >
+                Introducing the Fancy Latte Cup, crafted with high-quality
+                materials and a sleek design for an elevated coffee experience.
+                Impress guests or customers with its unique shape and elegant
+                finish. Order now for the ultimate latte experience.
+              </motion.h3>
+              <Link
+                to={"/products"}
+                className="mt-5 p-2 text-white hover:rounded-xl  flex  items-center gap-2 ease-in-out  duration-200 bg-black  w-fit "
+              >
                 Explore now
                 <span></span>
                 <IoArrowForward className="  " />
-              </button>
+              </Link>
             </div>
           </section>
 
           <section className="my-28 md:mb-16 text-center md:mx-24 md:my-44  mx-4">
-            <h1 className=" text-4xl mb-12 font-bold">
+            <motion.h1
+              initial={{ y: -30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className=" text-4xl mb-12 font-bold"
+            >
               Variety of Sizes and Textures
-            </h1>
+            </motion.h1>
             <div className="flex flex-col md:flex-row text-left justify-between gap-8">
-              <div className="w-full overflow-hidden shadow-lg ">
+              <motion.div
+                initial={{ x: -50, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="w-full overflow-hidden shadow-lg "
+              >
                 <div>
                   <img className=" bg-[#EDE6D7] " src={kpjCup} />
                 </div>
@@ -139,14 +209,19 @@ function Home() {
                       </span>
                     </p>
                   </div>
-                  <Link>
+                  <Link to={"/products"}>
                     <IoArrowForward className="w-[2rem] h-[2rem] transition  hover:translate-x-1" />
                   </Link>
                 </div>
-              </div>
-              <div className="w-full overflow-hidden shadow-lg ">
-                <div>
-                  <img className=" bg-[#EDE6D7] " src={kpjCup} />
+              </motion.div>
+              <motion.div
+                initial={{ x: -50, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.4 }}
+                className="w-full overflow-hidden shadow-lg "
+              >
+                <div className="bg-[#d7e1ed]">
+                  <img className=" scale-125" src={kpjCup} />
                 </div>
                 <div className="p-4 flex justify-between items-center">
                   <div>
@@ -158,14 +233,19 @@ function Home() {
                       </span>
                     </p>{" "}
                   </div>
-                  <Link>
+                  <Link to={"/products"}>
                     <IoArrowForward className="w-[2rem] h-[2rem] transition  hover:translate-x-1" />
                   </Link>
                 </div>
-              </div>
-              <div className="w-full overflow-hidden shadow-lg ">
-                <div>
-                  <img className=" bg-[#EDE6D7] " src={kpjCup} />
+              </motion.div>
+              <motion.div
+                initial={{ x: -50, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1.8 }}
+                className="w-full overflow-hidden shadow-lg "
+              >
+                <div className="bg-[#EDE6D7]">
+                  <img className=" scale-150" src={kpjCup} />
                 </div>
                 <div className="p-4 flex justify-between items-center">
                   <div>
@@ -177,11 +257,11 @@ function Home() {
                       </span>
                     </p>
                   </div>
-                  <Link>
+                  <Link to={"/products"}>
                     <IoArrowForward className="w-[2rem] h-[2rem] transition  hover:translate-x-1" />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             </div>
             <button className="mt-5 p-2 transition hover:scale-110 rounded-xl m-auto  flex  items-center gap-2 ease-in-out  w-fit ">
               Explore now
@@ -198,8 +278,9 @@ function Home() {
                     Meet our leadership
                   </h2>
                   <p className="mt-6 text-lg leading-8 text-gray-600">
-                    Libero fames augue nisl porttitor nisi, quis. Id ac elit
-                    odio vitae elementum enim vitae ullamcorper suspendisse.
+                    Our team collaborates to complete an initiative, led by the
+                    co-founders with unique skills. Communication and teamwork
+                    are essential for success.
                   </p>
                 </div>
                 <ul

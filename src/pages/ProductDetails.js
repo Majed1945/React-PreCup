@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { db, auth } from "../firebase-config.js";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import showToast from "../components/Toast";
-
+import { motion } from "framer-motion";
 function ProductDetails() {
   const navigate = useNavigate();
   const [productInfo, setProductInfo] = useState({});
@@ -55,11 +55,11 @@ function ProductDetails() {
   }
   return (
     <div className="flex flex-col md:flex-row ">
-      <div className="w-full md:w-[50%] flex items-center bg-black justify-center overflow-hidden md:h-screen ">
+      <div className="w-full md:w-[50%] flex items-center  justify-center overflow-hidden md:h-screen ">
         <div>
           <img
             src={productInfo.img}
-            className="md:scale-150 z-[-999]  w-[300px] h-[300px] object-cover"
+            className="md:scale-150 z-[-999]   w-[300px] h-[300px] object-cover"
           />
         </div>
       </div>
@@ -70,29 +70,59 @@ function ProductDetails() {
           }}
           className="flex items-center gap-2"
         >
-          <div className=" border-[1px] rounded-[50%] border-black p-2">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className=" border-[1px] rounded-[50%] border-black p-2"
+          >
             <IoArrowBackOutline />
-          </div>
-          <h3>Back</h3>
+          </motion.div>
+          <motion.h3
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            Back
+          </motion.h3>
         </Link>
-        <div className=" my-4 mt-8 text-5xl font-serif">
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+          className=" my-4 mt-8 text-5xl font-serif"
+        >
           <h1>{productInfo.name}</h1>
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          initial={{ y: 55, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.1 }}
+        >
           <p className="font-extralight tracking-widest ">
             {productInfo.description}
           </p>
-        </div>
+        </motion.div>
         <div className="flex flex-col gap-4 mt-10">
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
+          <motion.div
+            initial={{ y: 60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2 }}
+            className="flex  border-b-[1px] pb-2 border-black justify-between items-center "
+          >
             <h2>Size</h2>
             <select className="border-0  focus:ring-0">
               <option>Large</option>
               <option>Medium</option>
               <option>Small</option>
             </select>
-          </div>
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
+          </motion.div>
+          <motion.div
+            initial={{ y: 65, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.3 }}
+            className="flex  border-b-[1px] pb-2 border-black justify-between items-center "
+          >
             <h2>Amount</h2>
             <div className="flex justify-end rounded-xl px-[3px] border-[1px] border-black items-center">
               <div>
@@ -131,16 +161,31 @@ function ProductDetails() {
                 </button>
               </div>
             </div>
-          </div>
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
+          </motion.div>
+          <motion.div
+            initial={{ y: 70, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.4 }}
+            className="flex  border-b-[1px] pb-2 border-black justify-between items-center "
+          >
             <h2>Quntity</h2>
             <h2>{productInfo.price} Sar / 1.200 Pcs</h2>
-          </div>
-          <div className="flex  border-b-[1px] pb-2 border-black justify-between items-center ">
+          </motion.div>
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            className="flex  border-b-[1px] pb-2 border-black justify-between items-center "
+          >
             <h2>Price</h2>
             <h2>{productInfo.price * count} SAR</h2>
-          </div>
-          <div className="flex gap-4 justify-between items-center ">
+          </motion.div>
+          <motion.div
+            initial={{ y: 90, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.6 }}
+            className="flex gap-4 justify-between items-center "
+          >
             <div className="rounded-full md:text-2xl w-full px-[3px] border-[1px] border-black">
               <button
                 onClick={handleAddToCart}
@@ -150,7 +195,7 @@ function ProductDetails() {
                 <IoArrowForwardOutline className="bg-black text-white rounded-[50%] border-[1px] h-10 w-10 float-right" />
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

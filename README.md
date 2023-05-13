@@ -2,7 +2,7 @@
 demo: https://calip.io/Ftz9Woh2#eT2e3Yp4
 # Project Description
 
-The "Employee Polls" project is my implementation of the final project for the Udacity React Nanodegree program. It is a web application that allows employees to participate in polls and surveys related to their work. Employees can create their own polls, respond to polls created by other employees, and view the results of polls. This project is built using React, Redux, and React Router, and the UI is styled using the Tailwind CSS framework.
+The Customizable Cup Templates web application is a comprehensive solution that integrates AI to simplify the process of designing and printing customized cups. The application utilizes advanced deep learning models such as Dell2 and DeepAI to generate professional-looking designs at a reduced cost. With its user-friendly interface, customizable templates, branding features, order tracking, and bulk ordering, the application streamlines the cup design process, making it faster, more efficient, and cost-effective for businesses of all sizes. Additionally, the web application promotes sustainability by offering reusable cup templates, catering to a diverse audience with customizable features such as packaging, design collaboration, and a design templates marketplace, and providing valuable analytics and responsive customer support.
 
 # How to Run the Project
 

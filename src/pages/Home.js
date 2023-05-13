@@ -48,7 +48,7 @@ function Home() {
   return (
     <div className="relative">
       <Navbar />
-      {user !== null && user.displayName === "admin" ? (
+      {user !== null && user.email === "admin@gmail.com" ? (
         <AdminDashboard />
       ) : (
         <main>

@@ -22,7 +22,7 @@ function Ai() {
 
   deepai.setApiKey("d11f386a-bbab-4040-9775-f91c44c23675");
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 

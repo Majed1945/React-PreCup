@@ -30,7 +30,6 @@ function EditUser(props) {
 
   async function getUserById() {
     const user = await (await getDoc(doc(db, "users", props.id))).data();
-    console.log(user);
     setEmail(user.email);
     setPhone(user.phone);
     setAddress(user.address);
@@ -54,7 +53,7 @@ function EditUser(props) {
     ) {
       showToast("Please add all fields", "error");
     } else {
-      updateEmail(auth.currentUser, email)
+      updateEmail(props.id, email)
         .then(() => {
           return updateProfile(auth.currentUser, {
             displayName: fName + " " + lName,
@@ -128,12 +127,6 @@ function EditUser(props) {
                 <Dialog.Panel className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="flex-row sm:flex ">
-                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <IoCreateOutline
-                          className="h-6 w-6  text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </div>
                       <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
                         <IoCreateOutline
                           className="h-6 w-6  text-gray-400"

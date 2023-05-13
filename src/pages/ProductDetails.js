@@ -25,7 +25,7 @@ function ProductDetails() {
     getProductById(id).then((info) => {
       setProductInfo(info);
     });
-  }, []);
+  });
   const [count, setCount] = useState(1);
   async function handleAddToCart(e) {
     e.preventDefault();
@@ -58,6 +58,7 @@ function ProductDetails() {
       <div className="w-full md:w-[50%] flex items-center  justify-center overflow-hidden md:h-screen ">
         <div>
           <img
+            alt="product info!"
             src={productInfo.img}
             className="md:scale-150 z-[-999]   w-[300px] h-[300px] object-cover"
           />

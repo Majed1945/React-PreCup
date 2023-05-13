@@ -57,6 +57,7 @@ function Home() {
             <img
               className="z-[1] w-full  scale-125   md:scale-125  md:w-[100%]  max-w-[1150px] m-auto"
               src={floatingCups}
+              alt="A nice cup!"
             />
             <h1
               style={{
@@ -89,7 +90,7 @@ function Home() {
 
           <section className="flex flex-col shadow-lg my-28  mx-4  md:mx-24 md:my-44 md:flex-row  ">
             <div className="flex-1">
-              <img className=" w-[100%] h-[100%] object-cover" src={cups} />
+              <img className=" w-[100%] h-[100%] object-cover" src={cups} alt="A nice cup!"/>
             </div>
             <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
               <motion.p
@@ -140,7 +141,7 @@ function Home() {
 
           <section className="flex flex-col md:flex-row-reverse my-28  md:mx-24 md:my-44  mx-4">
             <div className="flex-1">
-              <img className=" w-[100%] h-[100%] object-cover" src={smallCup} />
+              <img className=" w-[100%] h-[100%] object-cover" src={smallCup} alt="A nice cup!"/>
             </div>
             <div className="flex-1 m-auto flex  flex-col  p-6 text-left ">
               <motion.h1
@@ -197,7 +198,7 @@ function Home() {
                 className="w-full overflow-hidden shadow-lg "
               >
                 <div>
-                  <img className=" bg-[#EDE6D7] " src={kpjCup} />
+                  <img className=" bg-[#EDE6D7] " src={kpjCup} alt="A nice cup!"/>
                 </div>
                 <div className="p-4 flex justify-between items-center">
                   <div>
@@ -221,7 +222,7 @@ function Home() {
                 className="w-full overflow-hidden shadow-lg "
               >
                 <div className="bg-[#d7e1ed]">
-                  <img className=" scale-125" src={kpjCup} />
+                  <img className=" scale-125" src={kpjCup} alt="A nice cup!"/>
                 </div>
                 <div className="p-4 flex justify-between items-center">
                   <div>
@@ -245,7 +246,7 @@ function Home() {
                 className="w-full overflow-hidden shadow-lg "
               >
                 <div className="bg-[#EDE6D7]">
-                  <img className=" scale-150" src={kpjCup} />
+                  <img className=" scale-150" src={kpjCup} alt="A nice cup!"/>
                 </div>
                 <div className="p-4 flex justify-between items-center">
                   <div>

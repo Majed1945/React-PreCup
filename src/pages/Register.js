@@ -1,18 +1,14 @@
 import noonCup from "../Assets/noonCup.png";
 import logo from "../Assets/logo.png";
-import { Link, useNavigation } from "react-router-dom";
-import { IoArrowForwardOutline, IoLogoGoogle } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { IoArrowForwardOutline } from "react-icons/io5";
 import { useState } from "react";
 import showToast from "../components/Toast";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase-config";
-import { collection, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -21,18 +17,13 @@ const Register = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
 
-  async function createUserDocument(user, name) {}
   const handleRegisterUser = async (e) => {
     e.preventDefault();
     if (email === "" || password === "" || name === "" || address === "") {
       showToast("Please fill all fields", "error");
     } else {
       try {
-        const user = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        await createUserWithEmailAndPassword(auth, email, password);
         updateProfile(auth.currentUser, {
           displayName: name,
         })
@@ -65,11 +56,11 @@ const Register = () => {
   return (
     <div className="flex flex-col relative md:flex-row ">
       <Link to="/">
-        <img className=" absolute top-0 right-0 w-16  h-16" src={logo} />
+        <img className=" absolute top-0 right-0 w-16  h-16" src={logo} alt="A nice logo!" />
       </Link>
       <div className="w-full  md:w-[50%] flex items-center overflow-hidden md:h-screen bg-gray-100">
         <div>
-          <img src={noonCup} className="md:scale-150 z-[-999]  " />
+          <img src={noonCup} className="md:scale-150 z-[-999]  " alt="A nice cup!"/>
         </div>
       </div>
       <div className=" w-full  md:w-[50%] z-[2] p-6 md:p-16 my-auto">

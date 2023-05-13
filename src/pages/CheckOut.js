@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import cupImage from "../Assets/KPG-cup.png";
 import { auth, db } from "../firebase-config";
 import {
   collection,
   getDocs,
   deleteDoc,
   doc,
-  setDoc,
   addDoc,
 } from "firebase/firestore";
 import showToast from "../components/Toast";
@@ -20,14 +18,14 @@ const CheckOut = () => {
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState("2023");
   const [items, setItems] = useState([]);
-  const [shippingOption, setShippingOption] = useState("standard");
   const [cardName, setCardName] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardSecurityCode, setCardSecurityCode] = useState("");
   const [selectedCard, setSelectedCard] = useState("");
   const [user, setUser] = useState({});
-
+  const location = useLocation();
+  const receivedData = location.state.shipping;
   const navigate = useNavigate();
   useEffect(() => {
     const getUser = async () => {
@@ -103,9 +101,9 @@ const CheckOut = () => {
     items.forEach((item) => {
       sum += item.price * item.quantity;
     });
-    if (shippingOption === "standard") {
+    if (receivedData === "standard") {
       sum += 10;
-    } else if (shippingOption === "fast") {
+    } else if (receivedData === "fast") {
       sum += 30;
     }
 
@@ -251,6 +249,9 @@ const CheckOut = () => {
                       Select expiration month
                     </label>
                     <select
+                      onChange={(e) => {
+                        setMonth(e.target.value);
+                      }}
                       name="month"
                       id="month"
                       value={month}
@@ -276,6 +277,9 @@ const CheckOut = () => {
                       Select expiration year
                     </label>
                     <select
+                      onChange={(e) => {
+                        setYear(e.target.value);
+                      }}
                       name="year"
                       id="year"
                       value={year}

@@ -5,7 +5,6 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import EditProductCup from "../components/EditProductCup.js";
 import showToast from "../components/Toast.js";
 import { IoCloseOutline } from "react-icons/io5";
-import EditUser from "../components/EditUser.js";
 
 function AdminDashboard() {
   const [cups, setCups] = useState([]);
@@ -100,9 +99,6 @@ function AdminDashboard() {
                     <th scope="col" class="px-6 py-3">
                       Email
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                      Action
-                    </th>
                   </tr>
                 </thead>
                 {users.map((eachUser) => (
@@ -117,21 +113,7 @@ function AdminDashboard() {
                       <td class="px-6 py-4  first-letter:uppercase">
                         {eachUser.email}
                       </td>
-                      <td class="px-6 py-4 items-center flex gap-1">
-                        <div className=" rounded-lg">
-                          <EditUser id={eachUser.id} />
-                        </div>
-                        <div className="  rounded-lg">
-                          <button
-                            onClick={() => {
-                              deleteUser(eachUser.id);
-                            }}
-                            className=" bg-red-500 w-full justify-center text-center text flex items-center font-thin p-2   gap-1 text-white  rounded-lg"
-                          >
-                            <IoCloseOutline />
-                          </button>
-                        </div>
-                      </td>
+                     
                     </tr>
                   </tbody>
                 ))}
@@ -186,7 +168,10 @@ function AdminDashboard() {
                       <td class="px-6 py-4">{"$" + eachProduct.price}</td>
                       <td class="px-6 py-4 flex gap-1">
                         <div className="bg-black p-2 rounded-lg">
-                          <EditProductCup id={eachProduct.id} />
+                          <EditProductCup
+                            setCups={setCups}
+                            id={eachProduct.id}
+                          />
                         </div>
                         <div>
                           <button

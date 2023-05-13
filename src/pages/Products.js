@@ -20,7 +20,7 @@ export default function Products() {
       setCups(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getProducts();
-  }, []);
+  }, );
   return (
     <>
       <Navbar />
@@ -174,6 +174,7 @@ export default function Products() {
                         >
                           <ProductCups
                             id={e.id}
+                            setCups={setCups}
                             img={e.img}
                             name={e.name}
                             price={e.price}
@@ -208,6 +209,7 @@ export default function Products() {
                         >
                           <ProductCups
                             id={e.id}
+                            setCups={setCups}
                             img={e.img}
                             name={e.name}
                             price={e.price}

@@ -14,7 +14,7 @@ const Profile = () => {
     if (auth.currentUser === null) {
       navigate("/login");
     }
-  }, []);
+  }, );
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");

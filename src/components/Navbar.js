@@ -112,7 +112,7 @@ function Navbar() {
         <ul className="flex  gap-8">
           <li>
             <Link to="/">
-              {user !== null && user.displayName === "admin"
+              {user !== null && user.email === "admin@gmail.com"
                 ? "Report"
                 : "Home"}
             </Link>

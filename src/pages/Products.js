@@ -10,7 +10,7 @@ export default function Products() {
   const [cups, setCups] = useState([]);
   const admin =
     auth.currentUser !== null
-      ? auth.currentUser.displayName === "admin"
+      ? auth.currentUser.email === "admin@gmail.com"
       : false;
   const cupsCollectionRef = collection(db, "products");
 
